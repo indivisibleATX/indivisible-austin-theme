@@ -1,0 +1,280 @@
+$hover-color: #37b6bd;
+$background-color: #000;
+$sub-background-color: #303030;
+
+
+
+
+.main-navigation-wrap {
+	@media (min-width: $screen-sm-min) {
+		background: $background-color;
+	}
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+
+.main-navigation {
+	color: #fff;
+	text-align: center;
+	font-size: 0;
+
+	a {
+		color: $text-color;
+		@media (min-width: $screen-sm-min) {
+			color: #fff;
+		}
+		// outline: none;
+		text-decoration: none !important;
+		font-size: 17px;
+		text-align: left;
+		display: block;
+	}
+
+	.current_page_item > a,
+	.current-menu-item > a,
+	.current_page_parent > a,
+	.current_page_ancestor > a {
+		background: $hover-color;
+		padding: .5rem 1rem;
+
+		@media (min-width: $screen-sm-min) {
+			vertical-align: middle;
+			display: table-cell;
+			padding: 0;
+		}
+	}
+
+	ul.nav-menu {
+		@include make-row();
+		display: inline-block;
+		list-style: none;
+		padding: 0;
+		margin: 0 0 0 0;
+		text-transform: uppercase;
+
+		@media (min-width: $screen-sm-min) {
+			margin: 0;
+		}
+
+		// visibility: visible;
+		// height: auto;
+		@media (max-width: $screen-xs-max) {
+			visibility: hidden;
+			height: 0;
+			width: 100%;
+			overflow: hidden;
+			&[aria-expanded="true"] {
+				visibility: visible;
+				height: auto;
+			}
+		}
+
+		//
+		// first level nav items
+		//
+		& > li {
+			position: relative;
+			display: block;
+
+			@media (min-width: $screen-sm-min) {
+				float: left;
+				padding: 0;
+				min-height: 52px;
+			}
+
+			& > a {
+				padding: 9px 18px;
+				border-bottom: 1px solid rgba(0,0,0,0.3);
+
+				@media (min-width: $screen-sm-min) {
+					padding: 20px 30px;
+					display: table-cell;
+					line-height: 1.3rem;
+					height: 52px;
+					vertical-align: middle;
+					text-align: center;
+					text-shadow: #000 1px 1px 1px;
+					border: none;
+				}
+			}
+
+			//
+			// subnav
+			//
+			& > ul.children,
+			& > ul.sub-menu {
+				box-shadow: 0 2px 0px rgba(0, 0, 0, 0.12) inset;
+				background: rgba(0,0,0,.12);
+				display: block;
+				position: relative;
+				opacity: 1;
+				left: auto;
+				height: auto;
+				color: #fff;
+				z-index: 99999;
+				margin: 0 !important;
+				text-align: left;
+				padding: 0;
+
+				//
+				// sub nav for large screens
+				//
+				@media (min-width: $screen-sm-min) {
+					position: absolute;
+					left: -999rem;
+					width: 195px;
+					overflow: hidden;
+					background: $sub-background-color;
+					box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+				}
+
+				li {
+					display: block;
+					width: 100%;
+					height: auto;
+					position: relative;
+					@media (min-width: $screen-sm-min) {
+						opacity: 0;
+						border-bottom: 1px solid #444;
+					}
+
+					a, a:visited {
+						display: block;
+						height: auto;
+						text-align: left;
+						padding: 9px 9px 9px 30px;
+						font-size: 15px;
+						@media (min-width: $screen-sm-min) {
+							border-bottom: 1px solid rgba(0,0,0,0.3);
+							padding: 9px 18px;
+						}
+					}
+
+					&:hover > a,
+					&.focus > a {
+						background: $hover-color;
+						color: #fff;
+						& + ul {
+							height: auto;
+							opacity: 1;
+						}
+					}
+				}
+			}
+
+			//
+			// hover styles
+			//
+			& > a:hover,
+			&:hover > a {
+				// color: #000;
+				background: $hover-color;
+				color: #fff;
+
+				@media (min-width: $screen-sm-min) {
+					margin:20px;
+				}
+
+				& + ul li {
+					opacity: 1;
+					// transition: opacity .5s;
+				}
+
+				& + ul.sub-menu,
+				& + ul.children {
+					left: 0;
+					top: 100%;
+					opacity: 1;
+					overflow: visible;
+				}
+			}
+
+			//
+			// focus styles
+			//
+			& > a:focus,
+			&:focus > a,
+			&.focus > a {
+				// color: #000;
+				color: #fff;
+				background: $hover-color;
+
+				@media (min-width: $screen-sm-min) {
+				}
+
+				& + ul li {
+					opacity: 1;
+					// transition: opacity .5s;
+				}
+
+				& + ul.sub-menu,
+				& + ul.children {
+					left: 0;
+					top: 100%;
+					opacity: 1;
+					overflow: visible;
+				}
+			}
+		}
+	} /*end main ul*/
+
+	//
+	// additional subnav levels
+	//
+	ul.nav-menu > li ul ul {
+		display: block;
+		color: #fff;
+		z-index: 99999;
+		padding: 0;
+		margin: 0 !important;
+		text-align: left;
+		left: 0;
+		height: auto;
+		width: 100%;
+		top: 0;
+		background: rgba(0,0,0,.12);
+
+		@media (min-width: $screen-sm-min) {
+			position: absolute;
+			opacity: 0;
+			height: 0px;
+			overflow: hidden;
+			-webkit-transition: all .25s;
+			background: $sub-background-color;
+			left: 100%;
+		}
+
+		li {
+			padding-left: 0;
+
+			a {
+				padding-left: 42px !important;
+
+				@media (min-width: $screen-sm-min) {
+					padding: 9px 18px !important;
+				}
+
+			}
+
+		}
+
+
+
+
+
+	}
+
+/*end main-navigation*/
+}
+
+.slide {
+	& > .sub-menu {
+		left: 0 !important;
+		top: 100% !important;
+		opacity: 1 !important;
+	}
+}

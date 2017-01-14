@@ -1,0 +1,39 @@
+.flickity-enabled:focus .flickity-viewport {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.carousel-cell {
+  position: relative;
+  background: black;
+  width: 100%;
+  height: 36vw;
+  max-height: 520px;
+  margin-right: 10px;
+}
+
+.carousel__image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.carousel__text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background: rgba(0,0,0,0.5);
+  max-width: calc(100% - 40px);
+  p {
+    padding: 2rem;
+    margin: 0;
+  }
+}

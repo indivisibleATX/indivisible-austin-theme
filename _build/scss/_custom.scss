@@ -1,0 +1,141 @@
+$site-padding: 0px;
+
+header.site-header {
+
+  .menu-btn {
+  	margin: 15px 0;
+  	padding: 10px 16px;
+  	@media (min-width: $screen-sm-min) {
+  		display: none;
+  	}
+  }
+
+  .site-branding {
+
+    margin: 0 0 10px 0;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-color: #000;
+    height: 250px;
+
+    .site-title {
+      color: $gray-lighter;
+      margin: 0;
+      padding: 0;
+      font-family: $font-family-display;
+      font-size: 40px;
+      font-weight: 600;
+      margin-top: 40px;
+      padding: 0;
+      letter-spacing: 0.02em;
+      line-height: 1.2em;
+      text-align: center;
+      text-shadow: #000 3px 3px 1px;
+
+
+      @media (min-width: 768px) {
+        font-size: 56px;
+      }
+
+      a {
+        color: $gray-lighter;
+        text-decoration: none;
+        text-shadow: #000 3px 3px 1px;
+
+        &:hover { color: $gray-light; }
+        // &:visited { color: $gray-lighter; }
+
+      }
+
+    }
+
+    .site-description {
+      margin: 0;
+      font-family: $font-family-sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      padding-left: 80px;
+      margin-top: -15px;
+      letter-spacing: 0px;
+    }
+
+  }
+
+}
+
+.social-icons {
+
+  text-align: center;
+  z-index: 9999;
+  padding-top: 62px;
+
+  @media (min-width: 768px) {
+    padding-top: 80px;
+  }
+
+  a {
+    margin-right: 5px;
+    text-decoration: none;
+    color: $gray-lighter;
+    text-decoration: none;
+    text-shadow: #000 6px 6px 2px;
+
+    &:hover { color: $gray-light; }
+    // &:visited { color: $link-visited-color; }
+
+  }
+}
+
+div#page {
+
+  background-color: #FFF;
+  padding: 0;
+
+  #content {
+
+    width: 97%;
+    padding: 0 0 0 3%; // 3%;
+
+  }
+
+}
+
+footer.site-footer {
+
+  background-color: #CCC;
+  padding: 0 $site-padding;
+
+  .site-info {
+    clear: both;
+    padding: 40px;
+    text-align: center;
+  }
+
+  & > div.container {
+    margin: 0 auto;
+  }
+}
+
+@import "layout/content-sidebar";
+
+
+
+
+
+
+@media (min-width: 320px) {
+
+}
+
+@media (min-width: 321px) {
+
+}
+
+aside .widget ul {
+  list-style: none;
+}
+
+aside .widget ul li {
+  line-height: 1.4rem;
+  padding-bottom: 8px;
+}
