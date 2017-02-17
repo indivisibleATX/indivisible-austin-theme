@@ -1,1182 +1,598 @@
-/*!
- * Flickity PACKAGED v2.0.5
- * Touch, responsive, flickable carousels
- *
- * Licensed GPLv3 for open source use
- * or Flickity Commercial License for commercial use
- *
- * http://flickity.metafizzy.co
- * Copyright 2016 Metafizzy
- */
-
-!function (t, e) {
-  "function" == typeof define && define.amd ? define("jquery-bridget/jquery-bridget", ["jquery"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("jquery")) : t.jQueryBridget = e(t, t.jQuery);
-}(window, function (t, e) {
-  "use strict";
-  function i(i, o, a) {
-    function l(t, e, n) {
-      var s,
-          o = "$()." + i + '("' + e + '")';return t.each(function (t, l) {
-        var h = a.data(l, i);if (!h) return void r(i + " not initialized. Cannot call methods, i.e. " + o);var c = h[e];if (!c || "_" == e.charAt(0)) return void r(o + " is not a valid method");var d = c.apply(h, n);s = void 0 === s ? d : s;
-      }), void 0 !== s ? s : t;
-    }function h(t, e) {
-      t.each(function (t, n) {
-        var s = a.data(n, i);s ? (s.option(e), s._init()) : (s = new o(n, e), a.data(n, i, s));
-      });
-    }a = a || e || t.jQuery, a && (o.prototype.option || (o.prototype.option = function (t) {
-      a.isPlainObject(t) && (this.options = a.extend(!0, this.options, t));
-    }), a.fn[i] = function (t) {
-      if ("string" == typeof t) {
-        var e = s.call(arguments, 1);return l(this, t, e);
-      }return h(this, t), this;
-    }, n(a));
-  }function n(t) {
-    !t || t && t.bridget || (t.bridget = i);
-  }var s = Array.prototype.slice,
-      o = t.console,
-      r = "undefined" == typeof o ? function () {} : function (t) {
-    o.error(t);
-  };return n(e || t.jQuery), i;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("ev-emitter/ev-emitter", e) : "object" == typeof module && module.exports ? module.exports = e() : t.EvEmitter = e();
-}("undefined" != typeof window ? window : this, function () {
-  function t() {}var e = t.prototype;return e.on = function (t, e) {
-    if (t && e) {
-      var i = this._events = this._events || {},
-          n = i[t] = i[t] || [];return n.indexOf(e) == -1 && n.push(e), this;
-    }
-  }, e.once = function (t, e) {
-    if (t && e) {
-      this.on(t, e);var i = this._onceEvents = this._onceEvents || {},
-          n = i[t] = i[t] || {};return n[e] = !0, this;
-    }
-  }, e.off = function (t, e) {
-    var i = this._events && this._events[t];if (i && i.length) {
-      var n = i.indexOf(e);return n != -1 && i.splice(n, 1), this;
-    }
-  }, e.emitEvent = function (t, e) {
-    var i = this._events && this._events[t];if (i && i.length) {
-      var n = 0,
-          s = i[n];e = e || [];for (var o = this._onceEvents && this._onceEvents[t]; s;) {
-        var r = o && o[s];r && (this.off(t, s), delete o[s]), s.apply(this, e), n += r ? 0 : 1, s = i[n];
-      }return this;
-    }
-  }, t;
-}), function (t, e) {
-  "use strict";
-  "function" == typeof define && define.amd ? define("get-size/get-size", [], function () {
-    return e();
-  }) : "object" == typeof module && module.exports ? module.exports = e() : t.getSize = e();
-}(window, function () {
-  "use strict";
-  function t(t) {
-    var e = parseFloat(t),
-        i = t.indexOf("%") == -1 && !isNaN(e);return i && e;
-  }function e() {}function i() {
-    for (var t = { width: 0, height: 0, innerWidth: 0, innerHeight: 0, outerWidth: 0, outerHeight: 0 }, e = 0; e < h; e++) {
-      var i = l[e];t[i] = 0;
-    }return t;
-  }function n(t) {
-    var e = getComputedStyle(t);return e || a("Style returned " + e + ". Are you running this code in a hidden iframe on Firefox? See http://bit.ly/getsizebug1"), e;
-  }function s() {
-    if (!c) {
-      c = !0;var e = document.createElement("div");e.style.width = "200px", e.style.padding = "1px 2px 3px 4px", e.style.borderStyle = "solid", e.style.borderWidth = "1px 2px 3px 4px", e.style.boxSizing = "border-box";var i = document.body || document.documentElement;i.appendChild(e);var s = n(e);o.isBoxSizeOuter = r = 200 == t(s.width), i.removeChild(e);
-    }
-  }function o(e) {
-    if (s(), "string" == typeof e && (e = document.querySelector(e)), e && "object" == typeof e && e.nodeType) {
-      var o = n(e);if ("none" == o.display) return i();var a = {};a.width = e.offsetWidth, a.height = e.offsetHeight;for (var c = a.isBorderBox = "border-box" == o.boxSizing, d = 0; d < h; d++) {
-        var u = l[d],
-            f = o[u],
-            p = parseFloat(f);a[u] = isNaN(p) ? 0 : p;
-      }var v = a.paddingLeft + a.paddingRight,
-          g = a.paddingTop + a.paddingBottom,
-          m = a.marginLeft + a.marginRight,
-          y = a.marginTop + a.marginBottom,
-          S = a.borderLeftWidth + a.borderRightWidth,
-          E = a.borderTopWidth + a.borderBottomWidth,
-          b = c && r,
-          x = t(o.width);x !== !1 && (a.width = x + (b ? 0 : v + S));var C = t(o.height);return C !== !1 && (a.height = C + (b ? 0 : g + E)), a.innerWidth = a.width - (v + S), a.innerHeight = a.height - (g + E), a.outerWidth = a.width + m, a.outerHeight = a.height + y, a;
-    }
-  }var r,
-      a = "undefined" == typeof console ? e : function (t) {
-    console.error(t);
-  },
-      l = ["paddingLeft", "paddingRight", "paddingTop", "paddingBottom", "marginLeft", "marginRight", "marginTop", "marginBottom", "borderLeftWidth", "borderRightWidth", "borderTopWidth", "borderBottomWidth"],
-      h = l.length,
-      c = !1;return o;
-}), function (t, e) {
-  "use strict";
-  "function" == typeof define && define.amd ? define("desandro-matches-selector/matches-selector", e) : "object" == typeof module && module.exports ? module.exports = e() : t.matchesSelector = e();
-}(window, function () {
-  "use strict";
-  var t = function () {
-    var t = Element.prototype;if (t.matches) return "matches";if (t.matchesSelector) return "matchesSelector";for (var e = ["webkit", "moz", "ms", "o"], i = 0; i < e.length; i++) {
-      var n = e[i],
-          s = n + "MatchesSelector";if (t[s]) return s;
-    }
-  }();return function (e, i) {
-    return e[t](i);
-  };
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("fizzy-ui-utils/utils", ["desandro-matches-selector/matches-selector"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("desandro-matches-selector")) : t.fizzyUIUtils = e(t, t.matchesSelector);
-}(window, function (t, e) {
-  var i = {};i.extend = function (t, e) {
-    for (var i in e) t[i] = e[i];return t;
-  }, i.modulo = function (t, e) {
-    return (t % e + e) % e;
-  }, i.makeArray = function (t) {
-    var e = [];if (Array.isArray(t)) e = t;else if (t && "number" == typeof t.length) for (var i = 0; i < t.length; i++) e.push(t[i]);else e.push(t);return e;
-  }, i.removeFrom = function (t, e) {
-    var i = t.indexOf(e);i != -1 && t.splice(i, 1);
-  }, i.getParent = function (t, i) {
-    for (; t != document.body;) if (t = t.parentNode, e(t, i)) return t;
-  }, i.getQueryElement = function (t) {
-    return "string" == typeof t ? document.querySelector(t) : t;
-  }, i.handleEvent = function (t) {
-    var e = "on" + t.type;this[e] && this[e](t);
-  }, i.filterFindElements = function (t, n) {
-    t = i.makeArray(t);var s = [];return t.forEach(function (t) {
-      if (t instanceof HTMLElement) {
-        if (!n) return void s.push(t);e(t, n) && s.push(t);for (var i = t.querySelectorAll(n), o = 0; o < i.length; o++) s.push(i[o]);
+/*! jQuery Validation Plugin - v1.15.1 - 7/22/2016
+ * http://jqueryvalidation.org/
+ * Copyright (c) 2016 Jörn Zaefferer; Licensed MIT */
+!function (a) {
+  "function" == typeof define && define.amd ? define(["jquery"], a) : "object" == typeof module && module.exports ? module.exports = a(require("jquery")) : a(jQuery);
+}(function (a) {
+  a.extend(a.fn, { validate: function (b) {
+      if (!this.length) return void (b && b.debug && window.console && console.warn("Nothing selected, can't validate, returning nothing."));var c = a.data(this[0], "validator");return c ? c : (this.attr("novalidate", "novalidate"), c = new a.validator(b, this[0]), a.data(this[0], "validator", c), c.settings.onsubmit && (this.on("click.validate", ":submit", function (b) {
+        c.settings.submitHandler && (c.submitButton = b.target), a(this).hasClass("cancel") && (c.cancelSubmit = !0), void 0 !== a(this).attr("formnovalidate") && (c.cancelSubmit = !0);
+      }), this.on("submit.validate", function (b) {
+        function d() {
+          var d, e;return !c.settings.submitHandler || (c.submitButton && (d = a("<input type='hidden'/>").attr("name", c.submitButton.name).val(a(c.submitButton).val()).appendTo(c.currentForm)), e = c.settings.submitHandler.call(c, c.currentForm, b), c.submitButton && d.remove(), void 0 !== e && e);
+        }return c.settings.debug && b.preventDefault(), c.cancelSubmit ? (c.cancelSubmit = !1, d()) : c.form() ? c.pendingRequest ? (c.formSubmitted = !0, !1) : d() : (c.focusInvalid(), !1);
+      })), c);
+    }, valid: function () {
+      var b, c, d;return a(this[0]).is("form") ? b = this.validate().form() : (d = [], b = !0, c = a(this[0].form).validate(), this.each(function () {
+        b = c.element(this) && b, b || (d = d.concat(c.errorList));
+      }), c.errorList = d), b;
+    }, rules: function (b, c) {
+      var d,
+          e,
+          f,
+          g,
+          h,
+          i,
+          j = this[0];if (null != j && null != j.form) {
+        if (b) switch (d = a.data(j.form, "validator").settings, e = d.rules, f = a.validator.staticRules(j), b) {case "add":
+            a.extend(f, a.validator.normalizeRule(c)), delete f.messages, e[j.name] = f, c.messages && (d.messages[j.name] = a.extend(d.messages[j.name], c.messages));break;case "remove":
+            return c ? (i = {}, a.each(c.split(/\s/), function (b, c) {
+              i[c] = f[c], delete f[c], "required" === c && a(j).removeAttr("aria-required");
+            }), i) : (delete e[j.name], f);}return g = a.validator.normalizeRules(a.extend({}, a.validator.classRules(j), a.validator.attributeRules(j), a.validator.dataRules(j), a.validator.staticRules(j)), j), g.required && (h = g.required, delete g.required, g = a.extend({ required: h }, g), a(j).attr("aria-required", "true")), g.remote && (h = g.remote, delete g.remote, g = a.extend(g, { remote: h })), g;
       }
-    }), s;
-  }, i.debounceMethod = function (t, e, i) {
-    var n = t.prototype[e],
-        s = e + "Timeout";t.prototype[e] = function () {
-      var t = this[s];t && clearTimeout(t);var e = arguments,
-          o = this;this[s] = setTimeout(function () {
-        n.apply(o, e), delete o[s];
-      }, i || 100);
-    };
-  }, i.docReady = function (t) {
-    var e = document.readyState;"complete" == e || "interactive" == e ? setTimeout(t) : document.addEventListener("DOMContentLoaded", t);
-  }, i.toDashed = function (t) {
-    return t.replace(/(.)([A-Z])/g, function (t, e, i) {
-      return e + "-" + i;
-    }).toLowerCase();
-  };var n = t.console;return i.htmlInit = function (e, s) {
-    i.docReady(function () {
-      var o = i.toDashed(s),
-          r = "data-" + o,
-          a = document.querySelectorAll("[" + r + "]"),
-          l = document.querySelectorAll(".js-" + o),
-          h = i.makeArray(a).concat(i.makeArray(l)),
-          c = r + "-options",
-          d = t.jQuery;h.forEach(function (t) {
-        var i,
-            o = t.getAttribute(r) || t.getAttribute(c);try {
-          i = o && JSON.parse(o);
-        } catch (a) {
-          return void (n && n.error("Error parsing " + r + " on " + t.className + ": " + a));
-        }var l = new e(t, i);d && d.data(t, s, l);
+    } }), a.extend(a.expr[":"], { blank: function (b) {
+      return !a.trim("" + a(b).val());
+    }, filled: function (b) {
+      var c = a(b).val();return null !== c && !!a.trim("" + c);
+    }, unchecked: function (b) {
+      return !a(b).prop("checked");
+    } }), a.validator = function (b, c) {
+    this.settings = a.extend(!0, {}, a.validator.defaults, b), this.currentForm = c, this.init();
+  }, a.validator.format = function (b, c) {
+    return 1 === arguments.length ? function () {
+      var c = a.makeArray(arguments);return c.unshift(b), a.validator.format.apply(this, c);
+    } : void 0 === c ? b : (arguments.length > 2 && c.constructor !== Array && (c = a.makeArray(arguments).slice(1)), c.constructor !== Array && (c = [c]), a.each(c, function (a, c) {
+      b = b.replace(new RegExp("\\{" + a + "\\}", "g"), function () {
+        return c;
       });
-    });
-  }, i;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/cell", ["get-size/get-size"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("get-size")) : (t.Flickity = t.Flickity || {}, t.Flickity.Cell = e(t, t.getSize));
-}(window, function (t, e) {
-  function i(t, e) {
-    this.element = t, this.parent = e, this.create();
-  }var n = i.prototype;return n.create = function () {
-    this.element.style.position = "absolute", this.x = 0, this.shift = 0;
-  }, n.destroy = function () {
-    this.element.style.position = "";var t = this.parent.originSide;this.element.style[t] = "";
-  }, n.getSize = function () {
-    this.size = e(this.element);
-  }, n.setPosition = function (t) {
-    this.x = t, this.updateTarget(), this.renderPosition(t);
-  }, n.updateTarget = n.setDefaultTarget = function () {
-    var t = "left" == this.parent.originSide ? "marginLeft" : "marginRight";this.target = this.x + this.size[t] + this.size.width * this.parent.cellAlign;
-  }, n.renderPosition = function (t) {
-    var e = this.parent.originSide;this.element.style[e] = this.parent.getPositionValue(t);
-  }, n.wrapShift = function (t) {
-    this.shift = t, this.renderPosition(this.x + this.parent.slideableWidth * t);
-  }, n.remove = function () {
-    this.element.parentNode.removeChild(this.element);
-  }, i;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/slide", e) : "object" == typeof module && module.exports ? module.exports = e() : (t.Flickity = t.Flickity || {}, t.Flickity.Slide = e());
-}(window, function () {
-  "use strict";
-  function t(t) {
-    this.parent = t, this.isOriginLeft = "left" == t.originSide, this.cells = [], this.outerWidth = 0, this.height = 0;
-  }var e = t.prototype;return e.addCell = function (t) {
-    if (this.cells.push(t), this.outerWidth += t.size.outerWidth, this.height = Math.max(t.size.outerHeight, this.height), 1 == this.cells.length) {
-      this.x = t.x;var e = this.isOriginLeft ? "marginLeft" : "marginRight";this.firstMargin = t.size[e];
-    }
-  }, e.updateTarget = function () {
-    var t = this.isOriginLeft ? "marginRight" : "marginLeft",
-        e = this.getLastCell(),
-        i = e ? e.size[t] : 0,
-        n = this.outerWidth - (this.firstMargin + i);this.target = this.x + this.firstMargin + n * this.parent.cellAlign;
-  }, e.getLastCell = function () {
-    return this.cells[this.cells.length - 1];
-  }, e.select = function () {
-    this.changeSelectedClass("add");
-  }, e.unselect = function () {
-    this.changeSelectedClass("remove");
-  }, e.changeSelectedClass = function (t) {
-    this.cells.forEach(function (e) {
-      e.element.classList[t]("is-selected");
-    });
-  }, e.getCellElements = function () {
-    return this.cells.map(function (t) {
-      return t.element;
-    });
-  }, t;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/animate", ["fizzy-ui-utils/utils"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("fizzy-ui-utils")) : (t.Flickity = t.Flickity || {}, t.Flickity.animatePrototype = e(t, t.fizzyUIUtils));
-}(window, function (t, e) {
-  var i = t.requestAnimationFrame || t.webkitRequestAnimationFrame,
-      n = 0;i || (i = function (t) {
-    var e = new Date().getTime(),
-        i = Math.max(0, 16 - (e - n)),
-        s = setTimeout(t, i);return n = e + i, s;
-  });var s = {};s.startAnimation = function () {
-    this.isAnimating || (this.isAnimating = !0, this.restingFrames = 0, this.animate());
-  }, s.animate = function () {
-    this.applyDragForce(), this.applySelectedAttraction();var t = this.x;if (this.integratePhysics(), this.positionSlider(), this.settle(t), this.isAnimating) {
-      var e = this;i(function () {
-        e.animate();
-      });
-    }
-  };var o = function () {
-    var t = document.documentElement.style;return "string" == typeof t.transform ? "transform" : "WebkitTransform";
-  }();return s.positionSlider = function () {
-    var t = this.x;this.options.wrapAround && this.cells.length > 1 && (t = e.modulo(t, this.slideableWidth), t -= this.slideableWidth, this.shiftWrapCells(t)), t += this.cursorPosition, t = this.options.rightToLeft && o ? -t : t;var i = this.getPositionValue(t);this.slider.style[o] = this.isAnimating ? "translate3d(" + i + ",0,0)" : "translateX(" + i + ")";var n = this.slides[0];if (n) {
-      var s = -this.x - n.target,
-          r = s / this.slidesWidth;this.dispatchEvent("scroll", null, [r, s]);
-    }
-  }, s.positionSliderAtSelected = function () {
-    this.cells.length && (this.x = -this.selectedSlide.target, this.positionSlider());
-  }, s.getPositionValue = function (t) {
-    return this.options.percentPosition ? .01 * Math.round(t / this.size.innerWidth * 1e4) + "%" : Math.round(t) + "px";
-  }, s.settle = function (t) {
-    this.isPointerDown || Math.round(100 * this.x) != Math.round(100 * t) || this.restingFrames++, this.restingFrames > 2 && (this.isAnimating = !1, delete this.isFreeScrolling, this.positionSlider(), this.dispatchEvent("settle"));
-  }, s.shiftWrapCells = function (t) {
-    var e = this.cursorPosition + t;this._shiftCells(this.beforeShiftCells, e, -1);var i = this.size.innerWidth - (t + this.slideableWidth + this.cursorPosition);this._shiftCells(this.afterShiftCells, i, 1);
-  }, s._shiftCells = function (t, e, i) {
-    for (var n = 0; n < t.length; n++) {
-      var s = t[n],
-          o = e > 0 ? i : 0;s.wrapShift(o), e -= s.size.outerWidth;
-    }
-  }, s._unshiftCells = function (t) {
-    if (t && t.length) for (var e = 0; e < t.length; e++) t[e].wrapShift(0);
-  }, s.integratePhysics = function () {
-    this.x += this.velocity, this.velocity *= this.getFrictionFactor();
-  }, s.applyForce = function (t) {
-    this.velocity += t;
-  }, s.getFrictionFactor = function () {
-    return 1 - this.options[this.isFreeScrolling ? "freeScrollFriction" : "friction"];
-  }, s.getRestingPosition = function () {
-    return this.x + this.velocity / (1 - this.getFrictionFactor());
-  }, s.applyDragForce = function () {
-    if (this.isPointerDown) {
-      var t = this.dragX - this.x,
-          e = t - this.velocity;this.applyForce(e);
-    }
-  }, s.applySelectedAttraction = function () {
-    if (!this.isPointerDown && !this.isFreeScrolling && this.cells.length) {
-      var t = this.selectedSlide.target * -1 - this.x,
-          e = t * this.options.selectedAttraction;this.applyForce(e);
-    }
-  }, s;
-}), function (t, e) {
-  if ("function" == typeof define && define.amd) define("flickity/js/flickity", ["ev-emitter/ev-emitter", "get-size/get-size", "fizzy-ui-utils/utils", "./cell", "./slide", "./animate"], function (i, n, s, o, r, a) {
-    return e(t, i, n, s, o, r, a);
-  });else if ("object" == typeof module && module.exports) module.exports = e(t, require("ev-emitter"), require("get-size"), require("fizzy-ui-utils"), require("./cell"), require("./slide"), require("./animate"));else {
-    var i = t.Flickity;t.Flickity = e(t, t.EvEmitter, t.getSize, t.fizzyUIUtils, i.Cell, i.Slide, i.animatePrototype);
-  }
-}(window, function (t, e, i, n, s, o, r) {
-  function a(t, e) {
-    for (t = n.makeArray(t); t.length;) e.appendChild(t.shift());
-  }function l(t, e) {
-    var i = n.getQueryElement(t);if (!i) return void (d && d.error("Bad element for Flickity: " + (i || t)));if (this.element = i, this.element.flickityGUID) {
-      var s = f[this.element.flickityGUID];return s.option(e), s;
-    }h && (this.$element = h(this.element)), this.options = n.extend({}, this.constructor.defaults), this.option(e), this._create();
-  }var h = t.jQuery,
-      c = t.getComputedStyle,
-      d = t.console,
-      u = 0,
-      f = {};l.defaults = { accessibility: !0, cellAlign: "center", freeScrollFriction: .075, friction: .28, namespaceJQueryEvents: !0, percentPosition: !0, resize: !0, selectedAttraction: .025, setGallerySize: !0 }, l.createMethods = [];var p = l.prototype;n.extend(p, e.prototype), p._create = function () {
-    var e = this.guid = ++u;this.element.flickityGUID = e, f[e] = this, this.selectedIndex = 0, this.restingFrames = 0, this.x = 0, this.velocity = 0, this.originSide = this.options.rightToLeft ? "right" : "left", this.viewport = document.createElement("div"), this.viewport.className = "flickity-viewport", this._createSlider(), (this.options.resize || this.options.watchCSS) && t.addEventListener("resize", this), l.createMethods.forEach(function (t) {
-      this[t]();
-    }, this), this.options.watchCSS ? this.watchCSS() : this.activate();
-  }, p.option = function (t) {
-    n.extend(this.options, t);
-  }, p.activate = function () {
-    if (!this.isActive) {
-      this.isActive = !0, this.element.classList.add("flickity-enabled"), this.options.rightToLeft && this.element.classList.add("flickity-rtl"), this.getSize();var t = this._filterFindCellElements(this.element.children);a(t, this.slider), this.viewport.appendChild(this.slider), this.element.appendChild(this.viewport), this.reloadCells(), this.options.accessibility && (this.element.tabIndex = 0, this.element.addEventListener("keydown", this)), this.emitEvent("activate");var e,
-          i = this.options.initialIndex;e = this.isInitActivated ? this.selectedIndex : void 0 !== i && this.cells[i] ? i : 0, this.select(e, !1, !0), this.isInitActivated = !0;
-    }
-  }, p._createSlider = function () {
-    var t = document.createElement("div");t.className = "flickity-slider", t.style[this.originSide] = 0, this.slider = t;
-  }, p._filterFindCellElements = function (t) {
-    return n.filterFindElements(t, this.options.cellSelector);
-  }, p.reloadCells = function () {
-    this.cells = this._makeCells(this.slider.children), this.positionCells(), this._getWrapShiftCells(), this.setGallerySize();
-  }, p._makeCells = function (t) {
-    var e = this._filterFindCellElements(t),
-        i = e.map(function (t) {
-      return new s(t, this);
-    }, this);return i;
-  }, p.getLastCell = function () {
-    return this.cells[this.cells.length - 1];
-  }, p.getLastSlide = function () {
-    return this.slides[this.slides.length - 1];
-  }, p.positionCells = function () {
-    this._sizeCells(this.cells), this._positionCells(0);
-  }, p._positionCells = function (t) {
-    t = t || 0, this.maxCellHeight = t ? this.maxCellHeight || 0 : 0;var e = 0;if (t > 0) {
-      var i = this.cells[t - 1];e = i.x + i.size.outerWidth;
-    }for (var n = this.cells.length, s = t; s < n; s++) {
-      var o = this.cells[s];o.setPosition(e), e += o.size.outerWidth, this.maxCellHeight = Math.max(o.size.outerHeight, this.maxCellHeight);
-    }this.slideableWidth = e, this.updateSlides(), this._containSlides(), this.slidesWidth = n ? this.getLastSlide().target - this.slides[0].target : 0;
-  }, p._sizeCells = function (t) {
-    t.forEach(function (t) {
-      t.getSize();
-    });
-  }, p.updateSlides = function () {
-    if (this.slides = [], this.cells.length) {
-      var t = new o(this);this.slides.push(t);var e = "left" == this.originSide,
-          i = e ? "marginRight" : "marginLeft",
-          n = this._getCanCellFit();this.cells.forEach(function (e, s) {
-        if (!t.cells.length) return void t.addCell(e);var r = t.outerWidth - t.firstMargin + (e.size.outerWidth - e.size[i]);n.call(this, s, r) ? t.addCell(e) : (t.updateTarget(), t = new o(this), this.slides.push(t), t.addCell(e));
-      }, this), t.updateTarget(), this.updateSelectedSlide();
-    }
-  }, p._getCanCellFit = function () {
-    var t = this.options.groupCells;if (!t) return function () {
-      return !1;
-    };if ("number" == typeof t) {
-      var e = parseInt(t, 10);return function (t) {
-        return t % e !== 0;
-      };
-    }var i = "string" == typeof t && t.match(/^(\d+)%$/),
-        n = i ? parseInt(i[1], 10) / 100 : 1;return function (t, e) {
-      return e <= (this.size.innerWidth + 1) * n;
-    };
-  }, p._init = p.reposition = function () {
-    this.positionCells(), this.positionSliderAtSelected();
-  }, p.getSize = function () {
-    this.size = i(this.element), this.setCellAlign(), this.cursorPosition = this.size.innerWidth * this.cellAlign;
-  };var v = { center: { left: .5, right: .5 }, left: { left: 0, right: 1 }, right: { right: 0, left: 1 } };return p.setCellAlign = function () {
-    var t = v[this.options.cellAlign];this.cellAlign = t ? t[this.originSide] : this.options.cellAlign;
-  }, p.setGallerySize = function () {
-    if (this.options.setGallerySize) {
-      var t = this.options.adaptiveHeight && this.selectedSlide ? this.selectedSlide.height : this.maxCellHeight;this.viewport.style.height = t + "px";
-    }
-  }, p._getWrapShiftCells = function () {
-    if (this.options.wrapAround) {
-      this._unshiftCells(this.beforeShiftCells), this._unshiftCells(this.afterShiftCells);var t = this.cursorPosition,
-          e = this.cells.length - 1;this.beforeShiftCells = this._getGapCells(t, e, -1), t = this.size.innerWidth - this.cursorPosition, this.afterShiftCells = this._getGapCells(t, 0, 1);
-    }
-  }, p._getGapCells = function (t, e, i) {
-    for (var n = []; t > 0;) {
-      var s = this.cells[e];if (!s) break;n.push(s), e += i, t -= s.size.outerWidth;
-    }return n;
-  }, p._containSlides = function () {
-    if (this.options.contain && !this.options.wrapAround && this.cells.length) {
-      var t = this.options.rightToLeft,
-          e = t ? "marginRight" : "marginLeft",
-          i = t ? "marginLeft" : "marginRight",
-          n = this.slideableWidth - this.getLastCell().size[i],
-          s = n < this.size.innerWidth,
-          o = this.cursorPosition + this.cells[0].size[e],
-          r = n - this.size.innerWidth * (1 - this.cellAlign);this.slides.forEach(function (t) {
-        s ? t.target = n * this.cellAlign : (t.target = Math.max(t.target, o), t.target = Math.min(t.target, r));
-      }, this);
-    }
-  }, p.dispatchEvent = function (t, e, i) {
-    var n = e ? [e].concat(i) : i;if (this.emitEvent(t, n), h && this.$element) {
-      t += this.options.namespaceJQueryEvents ? ".flickity" : "";var s = t;if (e) {
-        var o = h.Event(e);o.type = t, s = o;
-      }this.$element.trigger(s, i);
-    }
-  }, p.select = function (t, e, i) {
-    this.isActive && (t = parseInt(t, 10), this._wrapSelect(t), (this.options.wrapAround || e) && (t = n.modulo(t, this.slides.length)), this.slides[t] && (this.selectedIndex = t, this.updateSelectedSlide(), i ? this.positionSliderAtSelected() : this.startAnimation(), this.options.adaptiveHeight && this.setGallerySize(), this.dispatchEvent("select"), this.dispatchEvent("cellSelect")));
-  }, p._wrapSelect = function (t) {
-    var e = this.slides.length,
-        i = this.options.wrapAround && e > 1;if (!i) return t;var s = n.modulo(t, e),
-        o = Math.abs(s - this.selectedIndex),
-        r = Math.abs(s + e - this.selectedIndex),
-        a = Math.abs(s - e - this.selectedIndex);!this.isDragSelect && r < o ? t += e : !this.isDragSelect && a < o && (t -= e), t < 0 ? this.x -= this.slideableWidth : t >= e && (this.x += this.slideableWidth);
-  }, p.previous = function (t, e) {
-    this.select(this.selectedIndex - 1, t, e);
-  }, p.next = function (t, e) {
-    this.select(this.selectedIndex + 1, t, e);
-  }, p.updateSelectedSlide = function () {
-    var t = this.slides[this.selectedIndex];t && (this.unselectSelectedSlide(), this.selectedSlide = t, t.select(), this.selectedCells = t.cells, this.selectedElements = t.getCellElements(), this.selectedCell = t.cells[0], this.selectedElement = this.selectedElements[0]);
-  }, p.unselectSelectedSlide = function () {
-    this.selectedSlide && this.selectedSlide.unselect();
-  }, p.selectCell = function (t, e, i) {
-    var n;"number" == typeof t ? n = this.cells[t] : ("string" == typeof t && (t = this.element.querySelector(t)), n = this.getCell(t));for (var s = 0; n && s < this.slides.length; s++) {
-      var o = this.slides[s],
-          r = o.cells.indexOf(n);if (r != -1) return void this.select(s, e, i);
-    }
-  }, p.getCell = function (t) {
-    for (var e = 0; e < this.cells.length; e++) {
-      var i = this.cells[e];if (i.element == t) return i;
-    }
-  }, p.getCells = function (t) {
-    t = n.makeArray(t);var e = [];return t.forEach(function (t) {
-      var i = this.getCell(t);i && e.push(i);
-    }, this), e;
-  }, p.getCellElements = function () {
-    return this.cells.map(function (t) {
-      return t.element;
-    });
-  }, p.getParentCell = function (t) {
-    var e = this.getCell(t);return e ? e : (t = n.getParent(t, ".flickity-slider > *"), this.getCell(t));
-  }, p.getAdjacentCellElements = function (t, e) {
-    if (!t) return this.selectedSlide.getCellElements();e = void 0 === e ? this.selectedIndex : e;var i = this.slides.length;if (1 + 2 * t >= i) return this.getCellElements();for (var s = [], o = e - t; o <= e + t; o++) {
-      var r = this.options.wrapAround ? n.modulo(o, i) : o,
-          a = this.slides[r];a && (s = s.concat(a.getCellElements()));
-    }return s;
-  }, p.uiChange = function () {
-    this.emitEvent("uiChange");
-  }, p.childUIPointerDown = function (t) {
-    this.emitEvent("childUIPointerDown", [t]);
-  }, p.onresize = function () {
-    this.watchCSS(), this.resize();
-  }, n.debounceMethod(l, "onresize", 150), p.resize = function () {
-    if (this.isActive) {
-      this.getSize(), this.options.wrapAround && (this.x = n.modulo(this.x, this.slideableWidth)), this.positionCells(), this._getWrapShiftCells(), this.setGallerySize(), this.emitEvent("resize");var t = this.selectedElements && this.selectedElements[0];this.selectCell(t, !1, !0);
-    }
-  }, p.watchCSS = function () {
-    var t = this.options.watchCSS;if (t) {
-      var e = c(this.element, ":after").content;e.indexOf("flickity") != -1 ? this.activate() : this.deactivate();
-    }
-  }, p.onkeydown = function (t) {
-    if (this.options.accessibility && (!document.activeElement || document.activeElement == this.element)) if (37 == t.keyCode) {
-      var e = this.options.rightToLeft ? "next" : "previous";this.uiChange(), this[e]();
-    } else if (39 == t.keyCode) {
-      var i = this.options.rightToLeft ? "previous" : "next";this.uiChange(), this[i]();
-    }
-  }, p.deactivate = function () {
-    this.isActive && (this.element.classList.remove("flickity-enabled"), this.element.classList.remove("flickity-rtl"), this.cells.forEach(function (t) {
-      t.destroy();
-    }), this.unselectSelectedSlide(), this.element.removeChild(this.viewport), a(this.slider.children, this.element), this.options.accessibility && (this.element.removeAttribute("tabIndex"), this.element.removeEventListener("keydown", this)), this.isActive = !1, this.emitEvent("deactivate"));
-  }, p.destroy = function () {
-    this.deactivate(), t.removeEventListener("resize", this), this.emitEvent("destroy"), h && this.$element && h.removeData(this.element, "flickity"), delete this.element.flickityGUID, delete f[this.guid];
-  }, n.extend(p, r), l.data = function (t) {
-    t = n.getQueryElement(t);var e = t && t.flickityGUID;return e && f[e];
-  }, n.htmlInit(l, "flickity"), h && h.bridget && h.bridget("flickity", l), l.Cell = s, l;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("unipointer/unipointer", ["ev-emitter/ev-emitter"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("ev-emitter")) : t.Unipointer = e(t, t.EvEmitter);
-}(window, function (t, e) {
-  function i() {}function n() {}var s = n.prototype = Object.create(e.prototype);s.bindStartEvent = function (t) {
-    this._bindStartEvent(t, !0);
-  }, s.unbindStartEvent = function (t) {
-    this._bindStartEvent(t, !1);
-  }, s._bindStartEvent = function (e, i) {
-    i = void 0 === i || !!i;var n = i ? "addEventListener" : "removeEventListener";t.navigator.pointerEnabled ? e[n]("pointerdown", this) : t.navigator.msPointerEnabled ? e[n]("MSPointerDown", this) : (e[n]("mousedown", this), e[n]("touchstart", this));
-  }, s.handleEvent = function (t) {
-    var e = "on" + t.type;this[e] && this[e](t);
-  }, s.getTouch = function (t) {
-    for (var e = 0; e < t.length; e++) {
-      var i = t[e];if (i.identifier == this.pointerIdentifier) return i;
-    }
-  }, s.onmousedown = function (t) {
-    var e = t.button;e && 0 !== e && 1 !== e || this._pointerDown(t, t);
-  }, s.ontouchstart = function (t) {
-    this._pointerDown(t, t.changedTouches[0]);
-  }, s.onMSPointerDown = s.onpointerdown = function (t) {
-    this._pointerDown(t, t);
-  }, s._pointerDown = function (t, e) {
-    this.isPointerDown || (this.isPointerDown = !0, this.pointerIdentifier = void 0 !== e.pointerId ? e.pointerId : e.identifier, this.pointerDown(t, e));
-  }, s.pointerDown = function (t, e) {
-    this._bindPostStartEvents(t), this.emitEvent("pointerDown", [t, e]);
-  };var o = { mousedown: ["mousemove", "mouseup"], touchstart: ["touchmove", "touchend", "touchcancel"], pointerdown: ["pointermove", "pointerup", "pointercancel"], MSPointerDown: ["MSPointerMove", "MSPointerUp", "MSPointerCancel"] };return s._bindPostStartEvents = function (e) {
-    if (e) {
-      var i = o[e.type];i.forEach(function (e) {
-        t.addEventListener(e, this);
-      }, this), this._boundPointerEvents = i;
-    }
-  }, s._unbindPostStartEvents = function () {
-    this._boundPointerEvents && (this._boundPointerEvents.forEach(function (e) {
-      t.removeEventListener(e, this);
-    }, this), delete this._boundPointerEvents);
-  }, s.onmousemove = function (t) {
-    this._pointerMove(t, t);
-  }, s.onMSPointerMove = s.onpointermove = function (t) {
-    t.pointerId == this.pointerIdentifier && this._pointerMove(t, t);
-  }, s.ontouchmove = function (t) {
-    var e = this.getTouch(t.changedTouches);e && this._pointerMove(t, e);
-  }, s._pointerMove = function (t, e) {
-    this.pointerMove(t, e);
-  }, s.pointerMove = function (t, e) {
-    this.emitEvent("pointerMove", [t, e]);
-  }, s.onmouseup = function (t) {
-    this._pointerUp(t, t);
-  }, s.onMSPointerUp = s.onpointerup = function (t) {
-    t.pointerId == this.pointerIdentifier && this._pointerUp(t, t);
-  }, s.ontouchend = function (t) {
-    var e = this.getTouch(t.changedTouches);e && this._pointerUp(t, e);
-  }, s._pointerUp = function (t, e) {
-    this._pointerDone(), this.pointerUp(t, e);
-  }, s.pointerUp = function (t, e) {
-    this.emitEvent("pointerUp", [t, e]);
-  }, s._pointerDone = function () {
-    this.isPointerDown = !1, delete this.pointerIdentifier, this._unbindPostStartEvents(), this.pointerDone();
-  }, s.pointerDone = i, s.onMSPointerCancel = s.onpointercancel = function (t) {
-    t.pointerId == this.pointerIdentifier && this._pointerCancel(t, t);
-  }, s.ontouchcancel = function (t) {
-    var e = this.getTouch(t.changedTouches);e && this._pointerCancel(t, e);
-  }, s._pointerCancel = function (t, e) {
-    this._pointerDone(), this.pointerCancel(t, e);
-  }, s.pointerCancel = function (t, e) {
-    this.emitEvent("pointerCancel", [t, e]);
-  }, n.getPointerPoint = function (t) {
-    return { x: t.pageX, y: t.pageY };
-  }, n;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("unidragger/unidragger", ["unipointer/unipointer"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("unipointer")) : t.Unidragger = e(t, t.Unipointer);
-}(window, function (t, e) {
-  function i() {}function n() {}var s = n.prototype = Object.create(e.prototype);s.bindHandles = function () {
-    this._bindHandles(!0);
-  }, s.unbindHandles = function () {
-    this._bindHandles(!1);
-  };var o = t.navigator;return s._bindHandles = function (t) {
-    t = void 0 === t || !!t;var e;e = o.pointerEnabled ? function (e) {
-      e.style.touchAction = t ? "none" : "";
-    } : o.msPointerEnabled ? function (e) {
-      e.style.msTouchAction = t ? "none" : "";
-    } : i;for (var n = t ? "addEventListener" : "removeEventListener", s = 0; s < this.handles.length; s++) {
-      var r = this.handles[s];this._bindStartEvent(r, t), e(r), r[n]("click", this);
-    }
-  }, s.pointerDown = function (t, e) {
-    if ("INPUT" == t.target.nodeName && "range" == t.target.type) return this.isPointerDown = !1, void delete this.pointerIdentifier;this._dragPointerDown(t, e);var i = document.activeElement;i && i.blur && i.blur(), this._bindPostStartEvents(t), this.emitEvent("pointerDown", [t, e]);
-  }, s._dragPointerDown = function (t, i) {
-    this.pointerDownPoint = e.getPointerPoint(i);var n = this.canPreventDefaultOnPointerDown(t, i);n && t.preventDefault();
-  }, s.canPreventDefaultOnPointerDown = function (t) {
-    return "SELECT" != t.target.nodeName;
-  }, s.pointerMove = function (t, e) {
-    var i = this._dragPointerMove(t, e);this.emitEvent("pointerMove", [t, e, i]), this._dragMove(t, e, i);
-  }, s._dragPointerMove = function (t, i) {
-    var n = e.getPointerPoint(i),
-        s = { x: n.x - this.pointerDownPoint.x, y: n.y - this.pointerDownPoint.y };return !this.isDragging && this.hasDragStarted(s) && this._dragStart(t, i), s;
-  }, s.hasDragStarted = function (t) {
-    return Math.abs(t.x) > 3 || Math.abs(t.y) > 3;
-  }, s.pointerUp = function (t, e) {
-    this.emitEvent("pointerUp", [t, e]), this._dragPointerUp(t, e);
-  }, s._dragPointerUp = function (t, e) {
-    this.isDragging ? this._dragEnd(t, e) : this._staticClick(t, e);
-  }, s._dragStart = function (t, i) {
-    this.isDragging = !0, this.dragStartPoint = e.getPointerPoint(i), this.isPreventingClicks = !0, this.dragStart(t, i);
-  }, s.dragStart = function (t, e) {
-    this.emitEvent("dragStart", [t, e]);
-  }, s._dragMove = function (t, e, i) {
-    this.isDragging && this.dragMove(t, e, i);
-  }, s.dragMove = function (t, e, i) {
-    t.preventDefault(), this.emitEvent("dragMove", [t, e, i]);
-  }, s._dragEnd = function (t, e) {
-    this.isDragging = !1, setTimeout(function () {
-      delete this.isPreventingClicks;
-    }.bind(this)), this.dragEnd(t, e);
-  }, s.dragEnd = function (t, e) {
-    this.emitEvent("dragEnd", [t, e]);
-  }, s.onclick = function (t) {
-    this.isPreventingClicks && t.preventDefault();
-  }, s._staticClick = function (t, e) {
-    if (!this.isIgnoringMouseUp || "mouseup" != t.type) {
-      var i = t.target.nodeName;"INPUT" != i && "TEXTAREA" != i || t.target.focus(), this.staticClick(t, e), "mouseup" != t.type && (this.isIgnoringMouseUp = !0, setTimeout(function () {
-        delete this.isIgnoringMouseUp;
-      }.bind(this), 400));
-    }
-  }, s.staticClick = function (t, e) {
-    this.emitEvent("staticClick", [t, e]);
-  }, n.getPointerPoint = e.getPointerPoint, n;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/drag", ["./flickity", "unidragger/unidragger", "fizzy-ui-utils/utils"], function (i, n, s) {
-    return e(t, i, n, s);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("./flickity"), require("unidragger"), require("fizzy-ui-utils")) : t.Flickity = e(t, t.Flickity, t.Unidragger, t.fizzyUIUtils);
-}(window, function (t, e, i, n) {
-  function s() {
-    return { x: t.pageXOffset, y: t.pageYOffset };
-  }n.extend(e.defaults, { draggable: !0, dragThreshold: 3 }), e.createMethods.push("_createDrag");var o = e.prototype;n.extend(o, i.prototype);var r = "createTouch" in document,
-      a = !1;o._createDrag = function () {
-    this.on("activate", this.bindDrag), this.on("uiChange", this._uiChangeDrag), this.on("childUIPointerDown", this._childUIPointerDownDrag), this.on("deactivate", this.unbindDrag), r && !a && (t.addEventListener("touchmove", function () {}), a = !0);
-  }, o.bindDrag = function () {
-    this.options.draggable && !this.isDragBound && (this.element.classList.add("is-draggable"), this.handles = [this.viewport], this.bindHandles(), this.isDragBound = !0);
-  }, o.unbindDrag = function () {
-    this.isDragBound && (this.element.classList.remove("is-draggable"), this.unbindHandles(), delete this.isDragBound);
-  }, o._uiChangeDrag = function () {
-    delete this.isFreeScrolling;
-  }, o._childUIPointerDownDrag = function (t) {
-    t.preventDefault(), this.pointerDownFocus(t);
-  };var l = { TEXTAREA: !0, INPUT: !0, OPTION: !0 },
-      h = { radio: !0, checkbox: !0, button: !0, submit: !0, image: !0, file: !0 };o.pointerDown = function (e, i) {
-    var n = l[e.target.nodeName] && !h[e.target.type];if (n) return this.isPointerDown = !1, void delete this.pointerIdentifier;this._dragPointerDown(e, i);var o = document.activeElement;o && o.blur && o != this.element && o != document.body && o.blur(), this.pointerDownFocus(e), this.dragX = this.x, this.viewport.classList.add("is-pointer-down"), this._bindPostStartEvents(e), this.pointerDownScroll = s(), t.addEventListener("scroll", this), this.dispatchEvent("pointerDown", e, [i]);
-  };var c = { touchstart: !0, MSPointerDown: !0 },
-      d = { INPUT: !0, SELECT: !0 };return o.pointerDownFocus = function (e) {
-    if (this.options.accessibility && !c[e.type] && !d[e.target.nodeName]) {
-      var i = t.pageYOffset;this.element.focus(), t.pageYOffset != i && t.scrollTo(t.pageXOffset, i);
-    }
-  }, o.canPreventDefaultOnPointerDown = function (t) {
-    var e = "touchstart" == t.type,
-        i = t.target.nodeName;return !e && "SELECT" != i;
-  }, o.hasDragStarted = function (t) {
-    return Math.abs(t.x) > this.options.dragThreshold;
-  }, o.pointerUp = function (t, e) {
-    delete this.isTouchScrolling, this.viewport.classList.remove("is-pointer-down"), this.dispatchEvent("pointerUp", t, [e]), this._dragPointerUp(t, e);
-  }, o.pointerDone = function () {
-    t.removeEventListener("scroll", this), delete this.pointerDownScroll;
-  }, o.dragStart = function (e, i) {
-    this.dragStartPosition = this.x, this.startAnimation(), t.removeEventListener("scroll", this), this.dispatchEvent("dragStart", e, [i]);
-  }, o.pointerMove = function (t, e) {
-    var i = this._dragPointerMove(t, e);this.dispatchEvent("pointerMove", t, [e, i]), this._dragMove(t, e, i);
-  }, o.dragMove = function (t, e, i) {
-    t.preventDefault(), this.previousDragX = this.dragX;var n = this.options.rightToLeft ? -1 : 1,
-        s = this.dragStartPosition + i.x * n;if (!this.options.wrapAround && this.slides.length) {
-      var o = Math.max(-this.slides[0].target, this.dragStartPosition);s = s > o ? .5 * (s + o) : s;var r = Math.min(-this.getLastSlide().target, this.dragStartPosition);s = s < r ? .5 * (s + r) : s;
-    }this.dragX = s, this.dragMoveTime = new Date(), this.dispatchEvent("dragMove", t, [e, i]);
-  }, o.dragEnd = function (t, e) {
-    this.options.freeScroll && (this.isFreeScrolling = !0);var i = this.dragEndRestingSelect();if (this.options.freeScroll && !this.options.wrapAround) {
-      var n = this.getRestingPosition();this.isFreeScrolling = -n > this.slides[0].target && -n < this.getLastSlide().target;
-    } else this.options.freeScroll || i != this.selectedIndex || (i += this.dragEndBoostSelect());delete this.previousDragX, this.isDragSelect = this.options.wrapAround, this.select(i), delete this.isDragSelect, this.dispatchEvent("dragEnd", t, [e]);
-  }, o.dragEndRestingSelect = function () {
-    var t = this.getRestingPosition(),
-        e = Math.abs(this.getSlideDistance(-t, this.selectedIndex)),
-        i = this._getClosestResting(t, e, 1),
-        n = this._getClosestResting(t, e, -1),
-        s = i.distance < n.distance ? i.index : n.index;return s;
-  }, o._getClosestResting = function (t, e, i) {
-    for (var n = this.selectedIndex, s = 1 / 0, o = this.options.contain && !this.options.wrapAround ? function (t, e) {
-      return t <= e;
-    } : function (t, e) {
-      return t < e;
-    }; o(e, s) && (n += i, s = e, e = this.getSlideDistance(-t, n), null !== e);) e = Math.abs(e);return { distance: s, index: n - i };
-  }, o.getSlideDistance = function (t, e) {
-    var i = this.slides.length,
-        s = this.options.wrapAround && i > 1,
-        o = s ? n.modulo(e, i) : e,
-        r = this.slides[o];if (!r) return null;var a = s ? this.slideableWidth * Math.floor(e / i) : 0;return t - (r.target + a);
-  }, o.dragEndBoostSelect = function () {
-    if (void 0 === this.previousDragX || !this.dragMoveTime || new Date() - this.dragMoveTime > 100) return 0;var t = this.getSlideDistance(-this.dragX, this.selectedIndex),
-        e = this.previousDragX - this.dragX;return t > 0 && e > 0 ? 1 : t < 0 && e < 0 ? -1 : 0;
-  }, o.staticClick = function (t, e) {
-    var i = this.getParentCell(t.target),
-        n = i && i.element,
-        s = i && this.cells.indexOf(i);this.dispatchEvent("staticClick", t, [e, n, s]);
-  }, o.onscroll = function () {
-    var t = s(),
-        e = this.pointerDownScroll.x - t.x,
-        i = this.pointerDownScroll.y - t.y;(Math.abs(e) > 3 || Math.abs(i) > 3) && this._pointerDone();
-  }, e;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("tap-listener/tap-listener", ["unipointer/unipointer"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("unipointer")) : t.TapListener = e(t, t.Unipointer);
-}(window, function (t, e) {
-  function i(t) {
-    this.bindTap(t);
-  }var n = i.prototype = Object.create(e.prototype);return n.bindTap = function (t) {
-    t && (this.unbindTap(), this.tapElement = t, this._bindStartEvent(t, !0));
-  }, n.unbindTap = function () {
-    this.tapElement && (this._bindStartEvent(this.tapElement, !0), delete this.tapElement);
-  }, n.pointerUp = function (i, n) {
-    if (!this.isIgnoringMouseUp || "mouseup" != i.type) {
-      var s = e.getPointerPoint(n),
-          o = this.tapElement.getBoundingClientRect(),
-          r = t.pageXOffset,
-          a = t.pageYOffset,
-          l = s.x >= o.left + r && s.x <= o.right + r && s.y >= o.top + a && s.y <= o.bottom + a;if (l && this.emitEvent("tap", [i, n]), "mouseup" != i.type) {
-        this.isIgnoringMouseUp = !0;var h = this;setTimeout(function () {
-          delete h.isIgnoringMouseUp;
-        }, 400);
-      }
-    }
-  }, n.destroy = function () {
-    this.pointerDone(), this.unbindTap();
-  }, i;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/prev-next-button", ["./flickity", "tap-listener/tap-listener", "fizzy-ui-utils/utils"], function (i, n, s) {
-    return e(t, i, n, s);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("./flickity"), require("tap-listener"), require("fizzy-ui-utils")) : e(t, t.Flickity, t.TapListener, t.fizzyUIUtils);
-}(window, function (t, e, i, n) {
-  "use strict";
-  function s(t, e) {
-    this.direction = t, this.parent = e, this._create();
-  }function o(t) {
-    return "string" == typeof t ? t : "M " + t.x0 + ",50 L " + t.x1 + "," + (t.y1 + 50) + " L " + t.x2 + "," + (t.y2 + 50) + " L " + t.x3 + ",50  L " + t.x2 + "," + (50 - t.y2) + " L " + t.x1 + "," + (50 - t.y1) + " Z";
-  }var r = "http://www.w3.org/2000/svg";s.prototype = new i(), s.prototype._create = function () {
-    this.isEnabled = !0, this.isPrevious = this.direction == -1;var t = this.parent.options.rightToLeft ? 1 : -1;this.isLeft = this.direction == t;var e = this.element = document.createElement("button");e.className = "flickity-prev-next-button", e.className += this.isPrevious ? " previous" : " next", e.setAttribute("type", "button"), this.disable(), e.setAttribute("aria-label", this.isPrevious ? "previous" : "next");var i = this.createSVG();e.appendChild(i), this.on("tap", this.onTap), this.parent.on("select", this.update.bind(this)), this.on("pointerDown", this.parent.childUIPointerDown.bind(this.parent));
-  }, s.prototype.activate = function () {
-    this.bindTap(this.element), this.element.addEventListener("click", this), this.parent.element.appendChild(this.element);
-  }, s.prototype.deactivate = function () {
-    this.parent.element.removeChild(this.element), i.prototype.destroy.call(this), this.element.removeEventListener("click", this);
-  }, s.prototype.createSVG = function () {
-    var t = document.createElementNS(r, "svg");t.setAttribute("viewBox", "0 0 100 100");var e = document.createElementNS(r, "path"),
-        i = o(this.parent.options.arrowShape);return e.setAttribute("d", i), e.setAttribute("class", "arrow"), this.isLeft || e.setAttribute("transform", "translate(100, 100) rotate(180) "), t.appendChild(e), t;
-  }, s.prototype.onTap = function () {
-    if (this.isEnabled) {
-      this.parent.uiChange();var t = this.isPrevious ? "previous" : "next";this.parent[t]();
-    }
-  }, s.prototype.handleEvent = n.handleEvent, s.prototype.onclick = function () {
-    var t = document.activeElement;t && t == this.element && this.onTap();
-  }, s.prototype.enable = function () {
-    this.isEnabled || (this.element.disabled = !1, this.isEnabled = !0);
-  }, s.prototype.disable = function () {
-    this.isEnabled && (this.element.disabled = !0, this.isEnabled = !1);
-  }, s.prototype.update = function () {
-    var t = this.parent.slides;if (this.parent.options.wrapAround && t.length > 1) return void this.enable();var e = t.length ? t.length - 1 : 0,
-        i = this.isPrevious ? 0 : e,
-        n = this.parent.selectedIndex == i ? "disable" : "enable";this[n]();
-  }, s.prototype.destroy = function () {
-    this.deactivate();
-  }, n.extend(e.defaults, { prevNextButtons: !0, arrowShape: { x0: 10, x1: 60, y1: 50, x2: 70, y2: 40, x3: 30 } }), e.createMethods.push("_createPrevNextButtons");var a = e.prototype;return a._createPrevNextButtons = function () {
-    this.options.prevNextButtons && (this.prevButton = new s(-1, this), this.nextButton = new s(1, this), this.on("activate", this.activatePrevNextButtons));
-  }, a.activatePrevNextButtons = function () {
-    this.prevButton.activate(), this.nextButton.activate(), this.on("deactivate", this.deactivatePrevNextButtons);
-  }, a.deactivatePrevNextButtons = function () {
-    this.prevButton.deactivate(), this.nextButton.deactivate(), this.off("deactivate", this.deactivatePrevNextButtons);
-  }, e.PrevNextButton = s, e;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/page-dots", ["./flickity", "tap-listener/tap-listener", "fizzy-ui-utils/utils"], function (i, n, s) {
-    return e(t, i, n, s);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("./flickity"), require("tap-listener"), require("fizzy-ui-utils")) : e(t, t.Flickity, t.TapListener, t.fizzyUIUtils);
-}(window, function (t, e, i, n) {
-  function s(t) {
-    this.parent = t, this._create();
-  }s.prototype = new i(), s.prototype._create = function () {
-    this.holder = document.createElement("ol"), this.holder.className = "flickity-page-dots", this.dots = [], this.on("tap", this.onTap), this.on("pointerDown", this.parent.childUIPointerDown.bind(this.parent));
-  }, s.prototype.activate = function () {
-    this.setDots(), this.bindTap(this.holder), this.parent.element.appendChild(this.holder);
-  }, s.prototype.deactivate = function () {
-    this.parent.element.removeChild(this.holder), i.prototype.destroy.call(this);
-  }, s.prototype.setDots = function () {
-    var t = this.parent.slides.length - this.dots.length;t > 0 ? this.addDots(t) : t < 0 && this.removeDots(-t);
-  }, s.prototype.addDots = function (t) {
-    for (var e = document.createDocumentFragment(), i = []; t;) {
-      var n = document.createElement("li");n.className = "dot", e.appendChild(n), i.push(n), t--;
-    }this.holder.appendChild(e), this.dots = this.dots.concat(i);
-  }, s.prototype.removeDots = function (t) {
-    var e = this.dots.splice(this.dots.length - t, t);e.forEach(function (t) {
-      this.holder.removeChild(t);
-    }, this);
-  }, s.prototype.updateSelected = function () {
-    this.selectedDot && (this.selectedDot.className = "dot"), this.dots.length && (this.selectedDot = this.dots[this.parent.selectedIndex], this.selectedDot.className = "dot is-selected");
-  }, s.prototype.onTap = function (t) {
-    var e = t.target;if ("LI" == e.nodeName) {
-      this.parent.uiChange();var i = this.dots.indexOf(e);this.parent.select(i);
-    }
-  }, s.prototype.destroy = function () {
-    this.deactivate();
-  }, e.PageDots = s, n.extend(e.defaults, { pageDots: !0 }), e.createMethods.push("_createPageDots");var o = e.prototype;return o._createPageDots = function () {
-    this.options.pageDots && (this.pageDots = new s(this), this.on("activate", this.activatePageDots), this.on("select", this.updateSelectedPageDots), this.on("cellChange", this.updatePageDots), this.on("resize", this.updatePageDots), this.on("deactivate", this.deactivatePageDots));
-  }, o.activatePageDots = function () {
-    this.pageDots.activate();
-  }, o.updateSelectedPageDots = function () {
-    this.pageDots.updateSelected();
-  }, o.updatePageDots = function () {
-    this.pageDots.setDots();
-  }, o.deactivatePageDots = function () {
-    this.pageDots.deactivate();
-  }, e.PageDots = s, e;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/player", ["ev-emitter/ev-emitter", "fizzy-ui-utils/utils", "./flickity"], function (t, i, n) {
-    return e(t, i, n);
-  }) : "object" == typeof module && module.exports ? module.exports = e(require("ev-emitter"), require("fizzy-ui-utils"), require("./flickity")) : e(t.EvEmitter, t.fizzyUIUtils, t.Flickity);
-}(window, function (t, e, i) {
-  function n(t) {
-    this.parent = t, this.state = "stopped", o && (this.onVisibilityChange = function () {
-      this.visibilityChange();
-    }.bind(this), this.onVisibilityPlay = function () {
-      this.visibilityPlay();
-    }.bind(this));
-  }var s, o;"hidden" in document ? (s = "hidden", o = "visibilitychange") : "webkitHidden" in document && (s = "webkitHidden", o = "webkitvisibilitychange"), n.prototype = Object.create(t.prototype), n.prototype.play = function () {
-    if ("playing" != this.state) {
-      var t = document[s];if (o && t) return void document.addEventListener(o, this.onVisibilityPlay);this.state = "playing", o && document.addEventListener(o, this.onVisibilityChange), this.tick();
-    }
-  }, n.prototype.tick = function () {
-    if ("playing" == this.state) {
-      var t = this.parent.options.autoPlay;t = "number" == typeof t ? t : 3e3;var e = this;this.clear(), this.timeout = setTimeout(function () {
-        e.parent.next(!0), e.tick();
-      }, t);
-    }
-  }, n.prototype.stop = function () {
-    this.state = "stopped", this.clear(), o && document.removeEventListener(o, this.onVisibilityChange);
-  }, n.prototype.clear = function () {
-    clearTimeout(this.timeout);
-  }, n.prototype.pause = function () {
-    "playing" == this.state && (this.state = "paused", this.clear());
-  }, n.prototype.unpause = function () {
-    "paused" == this.state && this.play();
-  }, n.prototype.visibilityChange = function () {
-    var t = document[s];this[t ? "pause" : "unpause"]();
-  }, n.prototype.visibilityPlay = function () {
-    this.play(), document.removeEventListener(o, this.onVisibilityPlay);
-  }, e.extend(i.defaults, { pauseAutoPlayOnHover: !0 }), i.createMethods.push("_createPlayer");var r = i.prototype;return r._createPlayer = function () {
-    this.player = new n(this), this.on("activate", this.activatePlayer), this.on("uiChange", this.stopPlayer), this.on("pointerDown", this.stopPlayer), this.on("deactivate", this.deactivatePlayer);
-  }, r.activatePlayer = function () {
-    this.options.autoPlay && (this.player.play(), this.element.addEventListener("mouseenter", this));
-  }, r.playPlayer = function () {
-    this.player.play();
-  }, r.stopPlayer = function () {
-    this.player.stop();
-  }, r.pausePlayer = function () {
-    this.player.pause();
-  }, r.unpausePlayer = function () {
-    this.player.unpause();
-  }, r.deactivatePlayer = function () {
-    this.player.stop(), this.element.removeEventListener("mouseenter", this);
-  }, r.onmouseenter = function () {
-    this.options.pauseAutoPlayOnHover && (this.player.pause(), this.element.addEventListener("mouseleave", this));
-  }, r.onmouseleave = function () {
-    this.player.unpause(), this.element.removeEventListener("mouseleave", this);
-  }, i.Player = n, i;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/add-remove-cell", ["./flickity", "fizzy-ui-utils/utils"], function (i, n) {
-    return e(t, i, n);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("./flickity"), require("fizzy-ui-utils")) : e(t, t.Flickity, t.fizzyUIUtils);
-}(window, function (t, e, i) {
-  function n(t) {
-    var e = document.createDocumentFragment();return t.forEach(function (t) {
-      e.appendChild(t.element);
-    }), e;
-  }var s = e.prototype;return s.insert = function (t, e) {
-    var i = this._makeCells(t);if (i && i.length) {
-      var s = this.cells.length;e = void 0 === e ? s : e;var o = n(i),
-          r = e == s;if (r) this.slider.appendChild(o);else {
-        var a = this.cells[e].element;this.slider.insertBefore(o, a);
-      }if (0 === e) this.cells = i.concat(this.cells);else if (r) this.cells = this.cells.concat(i);else {
-        var l = this.cells.splice(e, s - e);this.cells = this.cells.concat(i).concat(l);
-      }this._sizeCells(i);var h = e > this.selectedIndex ? 0 : i.length;this._cellAddedRemoved(e, h);
-    }
-  }, s.append = function (t) {
-    this.insert(t, this.cells.length);
-  }, s.prepend = function (t) {
-    this.insert(t, 0);
-  }, s.remove = function (t) {
-    var e,
-        n,
-        s = this.getCells(t),
-        o = 0,
-        r = s.length;for (e = 0; e < r; e++) {
-      n = s[e];var a = this.cells.indexOf(n) < this.selectedIndex;o -= a ? 1 : 0;
-    }for (e = 0; e < r; e++) n = s[e], n.remove(), i.removeFrom(this.cells, n);s.length && this._cellAddedRemoved(0, o);
-  }, s._cellAddedRemoved = function (t, e) {
-    e = e || 0, this.selectedIndex += e, this.selectedIndex = Math.max(0, Math.min(this.slides.length - 1, this.selectedIndex)), this.cellChange(t, !0), this.emitEvent("cellAddedRemoved", [t, e]);
-  }, s.cellSizeChange = function (t) {
-    var e = this.getCell(t);if (e) {
-      e.getSize();var i = this.cells.indexOf(e);this.cellChange(i);
-    }
-  }, s.cellChange = function (t, e) {
-    var i = this.slideableWidth;if (this._positionCells(t), this._getWrapShiftCells(), this.setGallerySize(), this.emitEvent("cellChange", [t]), this.options.freeScroll) {
-      var n = i - this.slideableWidth;this.x += n * this.cellAlign, this.positionSlider();
-    } else e && this.positionSliderAtSelected(), this.select(this.selectedIndex);
-  }, e;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/lazyload", ["./flickity", "fizzy-ui-utils/utils"], function (i, n) {
-    return e(t, i, n);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("./flickity"), require("fizzy-ui-utils")) : e(t, t.Flickity, t.fizzyUIUtils);
-}(window, function (t, e, i) {
-  "use strict";
-  function n(t) {
-    if ("IMG" == t.nodeName && t.getAttribute("data-flickity-lazyload")) return [t];var e = t.querySelectorAll("img[data-flickity-lazyload]");return i.makeArray(e);
-  }function s(t, e) {
-    this.img = t, this.flickity = e, this.load();
-  }e.createMethods.push("_createLazyload");var o = e.prototype;return o._createLazyload = function () {
-    this.on("select", this.lazyLoad);
-  }, o.lazyLoad = function () {
-    var t = this.options.lazyLoad;if (t) {
-      var e = "number" == typeof t ? t : 0,
-          i = this.getAdjacentCellElements(e),
-          o = [];i.forEach(function (t) {
-        var e = n(t);o = o.concat(e);
-      }), o.forEach(function (t) {
-        new s(t, this);
-      }, this);
-    }
-  }, s.prototype.handleEvent = i.handleEvent, s.prototype.load = function () {
-    this.img.addEventListener("load", this), this.img.addEventListener("error", this), this.img.src = this.img.getAttribute("data-flickity-lazyload"), this.img.removeAttribute("data-flickity-lazyload");
-  }, s.prototype.onload = function (t) {
-    this.complete(t, "flickity-lazyloaded");
-  }, s.prototype.onerror = function (t) {
-    this.complete(t, "flickity-lazyerror");
-  }, s.prototype.complete = function (t, e) {
-    this.img.removeEventListener("load", this), this.img.removeEventListener("error", this);var i = this.flickity.getParentCell(this.img),
-        n = i && i.element;this.flickity.cellSizeChange(n), this.img.classList.add(e), this.flickity.dispatchEvent("lazyLoad", t, n);
-  }, e.LazyLoader = s, e;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity/js/index", ["./flickity", "./drag", "./prev-next-button", "./page-dots", "./player", "./add-remove-cell", "./lazyload"], e) : "object" == typeof module && module.exports && (module.exports = e(require("./flickity"), require("./drag"), require("./prev-next-button"), require("./page-dots"), require("./player"), require("./add-remove-cell"), require("./lazyload")));
-}(window, function (t) {
-  return t;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define("flickity-as-nav-for/as-nav-for", ["flickity/js/index", "fizzy-ui-utils/utils"], e) : "object" == typeof module && module.exports ? module.exports = e(require("flickity"), require("fizzy-ui-utils")) : t.Flickity = e(t.Flickity, t.fizzyUIUtils);
-}(window, function (t, e) {
-  function i(t, e, i) {
-    return (e - t) * i + t;
-  }t.createMethods.push("_createAsNavFor");var n = t.prototype;return n._createAsNavFor = function () {
-    this.on("activate", this.activateAsNavFor), this.on("deactivate", this.deactivateAsNavFor), this.on("destroy", this.destroyAsNavFor);var t = this.options.asNavFor;if (t) {
-      var e = this;setTimeout(function () {
-        e.setNavCompanion(t);
-      });
-    }
-  }, n.setNavCompanion = function (i) {
-    i = e.getQueryElement(i);var n = t.data(i);if (n && n != this) {
-      this.navCompanion = n;var s = this;this.onNavCompanionSelect = function () {
-        s.navCompanionSelect();
-      }, n.on("select", this.onNavCompanionSelect), this.on("staticClick", this.onNavStaticClick), this.navCompanionSelect(!0);
-    }
-  }, n.navCompanionSelect = function (t) {
-    if (this.navCompanion) {
-      var e = this.navCompanion.selectedCells[0],
-          n = this.navCompanion.cells.indexOf(e),
-          s = n + this.navCompanion.selectedCells.length - 1,
-          o = Math.floor(i(n, s, this.navCompanion.cellAlign));if (this.selectCell(o, !1, t), this.removeNavSelectedElements(), !(o >= this.cells.length)) {
-        var r = this.cells.slice(n, s + 1);this.navSelectedElements = r.map(function (t) {
-          return t.element;
-        }), this.changeNavSelectedClass("add");
-      }
-    }
-  }, n.changeNavSelectedClass = function (t) {
-    this.navSelectedElements.forEach(function (e) {
-      e.classList[t]("is-nav-selected");
-    });
-  }, n.activateAsNavFor = function () {
-    this.navCompanionSelect(!0);
-  }, n.removeNavSelectedElements = function () {
-    this.navSelectedElements && (this.changeNavSelectedClass("remove"), delete this.navSelectedElements);
-  }, n.onNavStaticClick = function (t, e, i, n) {
-    "number" == typeof n && this.navCompanion.selectCell(n);
-  }, n.deactivateAsNavFor = function () {
-    this.removeNavSelectedElements();
-  }, n.destroyAsNavFor = function () {
-    this.navCompanion && (this.navCompanion.off("select", this.onNavCompanionSelect), this.off("staticClick", this.onNavStaticClick), delete this.navCompanion);
-  }, t;
-}), function (t, e) {
-  "use strict";
-  "function" == typeof define && define.amd ? define("imagesloaded/imagesloaded", ["ev-emitter/ev-emitter"], function (i) {
-    return e(t, i);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("ev-emitter")) : t.imagesLoaded = e(t, t.EvEmitter);
-}(window, function (t, e) {
-  function i(t, e) {
-    for (var i in e) t[i] = e[i];return t;
-  }function n(t) {
-    var e = [];if (Array.isArray(t)) e = t;else if ("number" == typeof t.length) for (var i = 0; i < t.length; i++) e.push(t[i]);else e.push(t);return e;
-  }function s(t, e, o) {
-    return this instanceof s ? ("string" == typeof t && (t = document.querySelectorAll(t)), this.elements = n(t), this.options = i({}, this.options), "function" == typeof e ? o = e : i(this.options, e), o && this.on("always", o), this.getImages(), a && (this.jqDeferred = new a.Deferred()), void setTimeout(function () {
-      this.check();
-    }.bind(this))) : new s(t, e, o);
-  }function o(t) {
-    this.img = t;
-  }function r(t, e) {
-    this.url = t, this.element = e, this.img = new Image();
-  }var a = t.jQuery,
-      l = t.console;s.prototype = Object.create(e.prototype), s.prototype.options = {}, s.prototype.getImages = function () {
-    this.images = [], this.elements.forEach(this.addElementImages, this);
-  }, s.prototype.addElementImages = function (t) {
-    "IMG" == t.nodeName && this.addImage(t), this.options.background === !0 && this.addElementBackgroundImages(t);var e = t.nodeType;if (e && h[e]) {
-      for (var i = t.querySelectorAll("img"), n = 0; n < i.length; n++) {
-        var s = i[n];this.addImage(s);
-      }if ("string" == typeof this.options.background) {
-        var o = t.querySelectorAll(this.options.background);for (n = 0; n < o.length; n++) {
-          var r = o[n];this.addElementBackgroundImages(r);
+    }), b);
+  }, a.extend(a.validator, { defaults: { messages: {}, groups: {}, rules: {}, errorClass: "error", pendingClass: "pending", validClass: "valid", errorElement: "label", focusCleanup: !1, focusInvalid: !0, errorContainer: a([]), errorLabelContainer: a([]), onsubmit: !0, ignore: ":hidden", ignoreTitle: !1, onfocusin: function (a) {
+        this.lastActive = a, this.settings.focusCleanup && (this.settings.unhighlight && this.settings.unhighlight.call(this, a, this.settings.errorClass, this.settings.validClass), this.hideThese(this.errorsFor(a)));
+      }, onfocusout: function (a) {
+        this.checkable(a) || !(a.name in this.submitted) && this.optional(a) || this.element(a);
+      }, onkeyup: function (b, c) {
+        var d = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];9 === c.which && "" === this.elementValue(b) || a.inArray(c.keyCode, d) !== -1 || (b.name in this.submitted || b.name in this.invalid) && this.element(b);
+      }, onclick: function (a) {
+        a.name in this.submitted ? this.element(a) : a.parentNode.name in this.submitted && this.element(a.parentNode);
+      }, highlight: function (b, c, d) {
+        "radio" === b.type ? this.findByName(b.name).addClass(c).removeClass(d) : a(b).addClass(c).removeClass(d);
+      }, unhighlight: function (b, c, d) {
+        "radio" === b.type ? this.findByName(b.name).removeClass(c).addClass(d) : a(b).removeClass(c).addClass(d);
+      } }, setDefaults: function (b) {
+      a.extend(a.validator.defaults, b);
+    }, messages: { required: "This field is required.", remote: "Please fix this field.", email: "Please enter a valid email address.", url: "Please enter a valid URL.", date: "Please enter a valid date.", dateISO: "Please enter a valid date (ISO).", number: "Please enter a valid number.", digits: "Please enter only digits.", equalTo: "Please enter the same value again.", maxlength: a.validator.format("Please enter no more than {0} characters."), minlength: a.validator.format("Please enter at least {0} characters."), rangelength: a.validator.format("Please enter a value between {0} and {1} characters long."), range: a.validator.format("Please enter a value between {0} and {1}."), max: a.validator.format("Please enter a value less than or equal to {0}."), min: a.validator.format("Please enter a value greater than or equal to {0}."), step: a.validator.format("Please enter a multiple of {0}.") }, autoCreateRanges: !1, prototype: { init: function () {
+        function b(b) {
+          !this.form && this.hasAttribute("contenteditable") && (this.form = a(this).closest("form")[0]);var c = a.data(this.form, "validator"),
+              d = "on" + b.type.replace(/^validate/, ""),
+              e = c.settings;e[d] && !a(this).is(e.ignore) && e[d].call(c, this, b);
+        }this.labelContainer = a(this.settings.errorLabelContainer), this.errorContext = this.labelContainer.length && this.labelContainer || a(this.currentForm), this.containers = a(this.settings.errorContainer).add(this.settings.errorLabelContainer), this.submitted = {}, this.valueCache = {}, this.pendingRequest = 0, this.pending = {}, this.invalid = {}, this.reset();var c,
+            d = this.groups = {};a.each(this.settings.groups, function (b, c) {
+          "string" == typeof c && (c = c.split(/\s/)), a.each(c, function (a, c) {
+            d[c] = b;
+          });
+        }), c = this.settings.rules, a.each(c, function (b, d) {
+          c[b] = a.validator.normalizeRule(d);
+        }), a(this.currentForm).on("focusin.validate focusout.validate keyup.validate", ":text, [type='password'], [type='file'], select, textarea, [type='number'], [type='search'], [type='tel'], [type='url'], [type='email'], [type='datetime'], [type='date'], [type='month'], [type='week'], [type='time'], [type='datetime-local'], [type='range'], [type='color'], [type='radio'], [type='checkbox'], [contenteditable]", b).on("click.validate", "select, option, [type='radio'], [type='checkbox']", b), this.settings.invalidHandler && a(this.currentForm).on("invalid-form.validate", this.settings.invalidHandler), a(this.currentForm).find("[required], [data-rule-required], .required").attr("aria-required", "true");
+      }, form: function () {
+        return this.checkForm(), a.extend(this.submitted, this.errorMap), this.invalid = a.extend({}, this.errorMap), this.valid() || a(this.currentForm).triggerHandler("invalid-form", [this]), this.showErrors(), this.valid();
+      }, checkForm: function () {
+        this.prepareForm();for (var a = 0, b = this.currentElements = this.elements(); b[a]; a++) this.check(b[a]);return this.valid();
+      }, element: function (b) {
+        var c,
+            d,
+            e = this.clean(b),
+            f = this.validationTargetFor(e),
+            g = this,
+            h = !0;return void 0 === f ? delete this.invalid[e.name] : (this.prepareElement(f), this.currentElements = a(f), d = this.groups[f.name], d && a.each(this.groups, function (a, b) {
+          b === d && a !== f.name && (e = g.validationTargetFor(g.clean(g.findByName(a))), e && e.name in g.invalid && (g.currentElements.push(e), h = g.check(e) && h));
+        }), c = this.check(f) !== !1, h = h && c, c ? this.invalid[f.name] = !1 : this.invalid[f.name] = !0, this.numberOfInvalids() || (this.toHide = this.toHide.add(this.containers)), this.showErrors(), a(b).attr("aria-invalid", !c)), h;
+      }, showErrors: function (b) {
+        if (b) {
+          var c = this;a.extend(this.errorMap, b), this.errorList = a.map(this.errorMap, function (a, b) {
+            return { message: a, element: c.findByName(b)[0] };
+          }), this.successList = a.grep(this.successList, function (a) {
+            return !(a.name in b);
+          });
+        }this.settings.showErrors ? this.settings.showErrors.call(this, this.errorMap, this.errorList) : this.defaultShowErrors();
+      }, resetForm: function () {
+        a.fn.resetForm && a(this.currentForm).resetForm(), this.invalid = {}, this.submitted = {}, this.prepareForm(), this.hideErrors();var b = this.elements().removeData("previousValue").removeAttr("aria-invalid");this.resetElements(b);
+      }, resetElements: function (a) {
+        var b;if (this.settings.unhighlight) for (b = 0; a[b]; b++) this.settings.unhighlight.call(this, a[b], this.settings.errorClass, ""), this.findByName(a[b].name).removeClass(this.settings.validClass);else a.removeClass(this.settings.errorClass).removeClass(this.settings.validClass);
+      }, numberOfInvalids: function () {
+        return this.objectLength(this.invalid);
+      }, objectLength: function (a) {
+        var b,
+            c = 0;for (b in a) a[b] && c++;return c;
+      }, hideErrors: function () {
+        this.hideThese(this.toHide);
+      }, hideThese: function (a) {
+        a.not(this.containers).text(""), this.addWrapper(a).hide();
+      }, valid: function () {
+        return 0 === this.size();
+      }, size: function () {
+        return this.errorList.length;
+      }, focusInvalid: function () {
+        if (this.settings.focusInvalid) try {
+          a(this.findLastActive() || this.errorList.length && this.errorList[0].element || []).filter(":visible").focus().trigger("focusin");
+        } catch (a) {}
+      }, findLastActive: function () {
+        var b = this.lastActive;return b && 1 === a.grep(this.errorList, function (a) {
+          return a.element.name === b.name;
+        }).length && b;
+      }, elements: function () {
+        var b = this,
+            c = {};return a(this.currentForm).find("input, select, textarea, [contenteditable]").not(":submit, :reset, :image, :disabled").not(this.settings.ignore).filter(function () {
+          var d = this.name || a(this).attr("name");return !d && b.settings.debug && window.console && console.error("%o has no name assigned", this), this.hasAttribute("contenteditable") && (this.form = a(this).closest("form")[0]), !(d in c || !b.objectLength(a(this).rules())) && (c[d] = !0, !0);
+        });
+      }, clean: function (b) {
+        return a(b)[0];
+      }, errors: function () {
+        var b = this.settings.errorClass.split(" ").join(".");return a(this.settings.errorElement + "." + b, this.errorContext);
+      }, resetInternals: function () {
+        this.successList = [], this.errorList = [], this.errorMap = {}, this.toShow = a([]), this.toHide = a([]);
+      }, reset: function () {
+        this.resetInternals(), this.currentElements = a([]);
+      }, prepareForm: function () {
+        this.reset(), this.toHide = this.errors().add(this.containers);
+      }, prepareElement: function (a) {
+        this.reset(), this.toHide = this.errorsFor(a);
+      }, elementValue: function (b) {
+        var c,
+            d,
+            e = a(b),
+            f = b.type;return "radio" === f || "checkbox" === f ? this.findByName(b.name).filter(":checked").val() : "number" === f && "undefined" != typeof b.validity ? b.validity.badInput ? "NaN" : e.val() : (c = b.hasAttribute("contenteditable") ? e.text() : e.val(), "file" === f ? "C:\\fakepath\\" === c.substr(0, 12) ? c.substr(12) : (d = c.lastIndexOf("/"), d >= 0 ? c.substr(d + 1) : (d = c.lastIndexOf("\\"), d >= 0 ? c.substr(d + 1) : c)) : "string" == typeof c ? c.replace(/\r/g, "") : c);
+      }, check: function (b) {
+        b = this.validationTargetFor(this.clean(b));var c,
+            d,
+            e,
+            f = a(b).rules(),
+            g = a.map(f, function (a, b) {
+          return b;
+        }).length,
+            h = !1,
+            i = this.elementValue(b);if ("function" == typeof f.normalizer) {
+          if (i = f.normalizer.call(b, i), "string" != typeof i) throw new TypeError("The normalizer should return a string value.");delete f.normalizer;
+        }for (d in f) {
+          e = { method: d, parameters: f[d] };try {
+            if (c = a.validator.methods[d].call(this, i, b, e.parameters), "dependency-mismatch" === c && 1 === g) {
+              h = !0;continue;
+            }if (h = !1, "pending" === c) return void (this.toHide = this.toHide.not(this.errorsFor(b)));if (!c) return this.formatAndAdd(b, e), !1;
+          } catch (a) {
+            throw this.settings.debug && window.console && console.log("Exception occurred when checking element " + b.id + ", check the '" + e.method + "' method.", a), a instanceof TypeError && (a.message += ".  Exception occurred when checking element " + b.id + ", check the '" + e.method + "' method."), a;
+          }
+        }if (!h) return this.objectLength(f) && this.successList.push(b), !0;
+      }, customDataMessage: function (b, c) {
+        return a(b).data("msg" + c.charAt(0).toUpperCase() + c.substring(1).toLowerCase()) || a(b).data("msg");
+      }, customMessage: function (a, b) {
+        var c = this.settings.messages[a];return c && (c.constructor === String ? c : c[b]);
+      }, findDefined: function () {
+        for (var a = 0; a < arguments.length; a++) if (void 0 !== arguments[a]) return arguments[a];
+      }, defaultMessage: function (b, c) {
+        "string" == typeof c && (c = { method: c });var d = this.findDefined(this.customMessage(b.name, c.method), this.customDataMessage(b, c.method), !this.settings.ignoreTitle && b.title || void 0, a.validator.messages[c.method], "<strong>Warning: No message defined for " + b.name + "</strong>"),
+            e = /\$?\{(\d+)\}/g;return "function" == typeof d ? d = d.call(this, c.parameters, b) : e.test(d) && (d = a.validator.format(d.replace(e, "{$1}"), c.parameters)), d;
+      }, formatAndAdd: function (a, b) {
+        var c = this.defaultMessage(a, b);this.errorList.push({ message: c, element: a, method: b.method }), this.errorMap[a.name] = c, this.submitted[a.name] = c;
+      }, addWrapper: function (a) {
+        return this.settings.wrapper && (a = a.add(a.parent(this.settings.wrapper))), a;
+      }, defaultShowErrors: function () {
+        var a, b, c;for (a = 0; this.errorList[a]; a++) c = this.errorList[a], this.settings.highlight && this.settings.highlight.call(this, c.element, this.settings.errorClass, this.settings.validClass), this.showLabel(c.element, c.message);if (this.errorList.length && (this.toShow = this.toShow.add(this.containers)), this.settings.success) for (a = 0; this.successList[a]; a++) this.showLabel(this.successList[a]);if (this.settings.unhighlight) for (a = 0, b = this.validElements(); b[a]; a++) this.settings.unhighlight.call(this, b[a], this.settings.errorClass, this.settings.validClass);this.toHide = this.toHide.not(this.toShow), this.hideErrors(), this.addWrapper(this.toShow).show();
+      }, validElements: function () {
+        return this.currentElements.not(this.invalidElements());
+      }, invalidElements: function () {
+        return a(this.errorList).map(function () {
+          return this.element;
+        });
+      }, showLabel: function (b, c) {
+        var d,
+            e,
+            f,
+            g,
+            h = this.errorsFor(b),
+            i = this.idOrName(b),
+            j = a(b).attr("aria-describedby");h.length ? (h.removeClass(this.settings.validClass).addClass(this.settings.errorClass), h.html(c)) : (h = a("<" + this.settings.errorElement + ">").attr("id", i + "-error").addClass(this.settings.errorClass).html(c || ""), d = h, this.settings.wrapper && (d = h.hide().show().wrap("<" + this.settings.wrapper + "/>").parent()), this.labelContainer.length ? this.labelContainer.append(d) : this.settings.errorPlacement ? this.settings.errorPlacement.call(this, d, a(b)) : d.insertAfter(b), h.is("label") ? h.attr("for", i) : 0 === h.parents("label[for='" + this.escapeCssMeta(i) + "']").length && (f = h.attr("id"), j ? j.match(new RegExp("\\b" + this.escapeCssMeta(f) + "\\b")) || (j += " " + f) : j = f, a(b).attr("aria-describedby", j), e = this.groups[b.name], e && (g = this, a.each(g.groups, function (b, c) {
+          c === e && a("[name='" + g.escapeCssMeta(b) + "']", g.currentForm).attr("aria-describedby", h.attr("id"));
+        })))), !c && this.settings.success && (h.text(""), "string" == typeof this.settings.success ? h.addClass(this.settings.success) : this.settings.success(h, b)), this.toShow = this.toShow.add(h);
+      }, errorsFor: function (b) {
+        var c = this.escapeCssMeta(this.idOrName(b)),
+            d = a(b).attr("aria-describedby"),
+            e = "label[for='" + c + "'], label[for='" + c + "'] *";return d && (e = e + ", #" + this.escapeCssMeta(d).replace(/\s+/g, ", #")), this.errors().filter(e);
+      }, escapeCssMeta: function (a) {
+        return a.replace(/([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1");
+      }, idOrName: function (a) {
+        return this.groups[a.name] || (this.checkable(a) ? a.name : a.id || a.name);
+      }, validationTargetFor: function (b) {
+        return this.checkable(b) && (b = this.findByName(b.name)), a(b).not(this.settings.ignore)[0];
+      }, checkable: function (a) {
+        return (/radio|checkbox/i.test(a.type)
+        );
+      }, findByName: function (b) {
+        return a(this.currentForm).find("[name='" + this.escapeCssMeta(b) + "']");
+      }, getLength: function (b, c) {
+        switch (c.nodeName.toLowerCase()) {case "select":
+            return a("option:selected", c).length;case "input":
+            if (this.checkable(c)) return this.findByName(c.name).filter(":checked").length;}return b.length;
+      }, depend: function (a, b) {
+        return !this.dependTypes[typeof a] || this.dependTypes[typeof a](a, b);
+      }, dependTypes: { boolean: function (a) {
+          return a;
+        }, string: function (b, c) {
+          return !!a(b, c.form).length;
+        }, function: function (a, b) {
+          return a(b);
+        } }, optional: function (b) {
+        var c = this.elementValue(b);return !a.validator.methods.required.call(this, c, b) && "dependency-mismatch";
+      }, startRequest: function (b) {
+        this.pending[b.name] || (this.pendingRequest++, a(b).addClass(this.settings.pendingClass), this.pending[b.name] = !0);
+      }, stopRequest: function (b, c) {
+        this.pendingRequest--, this.pendingRequest < 0 && (this.pendingRequest = 0), delete this.pending[b.name], a(b).removeClass(this.settings.pendingClass), c && 0 === this.pendingRequest && this.formSubmitted && this.form() ? (a(this.currentForm).submit(), this.formSubmitted = !1) : !c && 0 === this.pendingRequest && this.formSubmitted && (a(this.currentForm).triggerHandler("invalid-form", [this]), this.formSubmitted = !1);
+      }, previousValue: function (b, c) {
+        return c = "string" == typeof c && c || "remote", a.data(b, "previousValue") || a.data(b, "previousValue", { old: null, valid: !0, message: this.defaultMessage(b, { method: c }) });
+      }, destroy: function () {
+        this.resetForm(), a(this.currentForm).off(".validate").removeData("validator").find(".validate-equalTo-blur").off(".validate-equalTo").removeClass("validate-equalTo-blur");
+      } }, classRuleSettings: { required: { required: !0 }, email: { email: !0 }, url: { url: !0 }, date: { date: !0 }, dateISO: { dateISO: !0 }, number: { number: !0 }, digits: { digits: !0 }, creditcard: { creditcard: !0 } }, addClassRules: function (b, c) {
+      b.constructor === String ? this.classRuleSettings[b] = c : a.extend(this.classRuleSettings, b);
+    }, classRules: function (b) {
+      var c = {},
+          d = a(b).attr("class");return d && a.each(d.split(" "), function () {
+        this in a.validator.classRuleSettings && a.extend(c, a.validator.classRuleSettings[this]);
+      }), c;
+    }, normalizeAttributeRule: function (a, b, c, d) {
+      /min|max|step/.test(c) && (null === b || /number|range|text/.test(b)) && (d = Number(d), isNaN(d) && (d = void 0)), d || 0 === d ? a[c] = d : b === c && "range" !== b && (a[c] = !0);
+    }, attributeRules: function (b) {
+      var c,
+          d,
+          e = {},
+          f = a(b),
+          g = b.getAttribute("type");for (c in a.validator.methods) "required" === c ? (d = b.getAttribute(c), "" === d && (d = !0), d = !!d) : d = f.attr(c), this.normalizeAttributeRule(e, g, c, d);return e.maxlength && /-1|2147483647|524288/.test(e.maxlength) && delete e.maxlength, e;
+    }, dataRules: function (b) {
+      var c,
+          d,
+          e = {},
+          f = a(b),
+          g = b.getAttribute("type");for (c in a.validator.methods) d = f.data("rule" + c.charAt(0).toUpperCase() + c.substring(1).toLowerCase()), this.normalizeAttributeRule(e, g, c, d);return e;
+    }, staticRules: function (b) {
+      var c = {},
+          d = a.data(b.form, "validator");return d.settings.rules && (c = a.validator.normalizeRule(d.settings.rules[b.name]) || {}), c;
+    }, normalizeRules: function (b, c) {
+      return a.each(b, function (d, e) {
+        if (e === !1) return void delete b[d];if (e.param || e.depends) {
+          var f = !0;switch (typeof e.depends) {case "string":
+              f = !!a(e.depends, c.form).length;break;case "function":
+              f = e.depends.call(c, c);}f ? b[d] = void 0 === e.param || e.param : (a.data(c.form, "validator").resetElements(a(c)), delete b[d]);
         }
-      }
-    }
-  };var h = { 1: !0, 9: !0, 11: !0 };return s.prototype.addElementBackgroundImages = function (t) {
-    var e = getComputedStyle(t);if (e) for (var i = /url\((['"])?(.*?)\1\)/gi, n = i.exec(e.backgroundImage); null !== n;) {
-      var s = n && n[2];s && this.addBackground(s, t), n = i.exec(e.backgroundImage);
-    }
-  }, s.prototype.addImage = function (t) {
-    var e = new o(t);this.images.push(e);
-  }, s.prototype.addBackground = function (t, e) {
-    var i = new r(t, e);this.images.push(i);
-  }, s.prototype.check = function () {
-    function t(t, i, n) {
-      setTimeout(function () {
-        e.progress(t, i, n);
-      });
-    }var e = this;return this.progressedCount = 0, this.hasAnyBroken = !1, this.images.length ? void this.images.forEach(function (e) {
-      e.once("progress", t), e.check();
-    }) : void this.complete();
-  }, s.prototype.progress = function (t, e, i) {
-    this.progressedCount++, this.hasAnyBroken = this.hasAnyBroken || !t.isLoaded, this.emitEvent("progress", [this, t, e]), this.jqDeferred && this.jqDeferred.notify && this.jqDeferred.notify(this, t), this.progressedCount == this.images.length && this.complete(), this.options.debug && l && l.log("progress: " + i, t, e);
-  }, s.prototype.complete = function () {
-    var t = this.hasAnyBroken ? "fail" : "done";if (this.isComplete = !0, this.emitEvent(t, [this]), this.emitEvent("always", [this]), this.jqDeferred) {
-      var e = this.hasAnyBroken ? "reject" : "resolve";this.jqDeferred[e](this);
-    }
-  }, o.prototype = Object.create(e.prototype), o.prototype.check = function () {
-    var t = this.getIsImageComplete();return t ? void this.confirm(0 !== this.img.naturalWidth, "naturalWidth") : (this.proxyImage = new Image(), this.proxyImage.addEventListener("load", this), this.proxyImage.addEventListener("error", this), this.img.addEventListener("load", this), this.img.addEventListener("error", this), void (this.proxyImage.src = this.img.src));
-  }, o.prototype.getIsImageComplete = function () {
-    return this.img.complete && void 0 !== this.img.naturalWidth;
-  }, o.prototype.confirm = function (t, e) {
-    this.isLoaded = t, this.emitEvent("progress", [this, this.img, e]);
-  }, o.prototype.handleEvent = function (t) {
-    var e = "on" + t.type;this[e] && this[e](t);
-  }, o.prototype.onload = function () {
-    this.confirm(!0, "onload"), this.unbindEvents();
-  }, o.prototype.onerror = function () {
-    this.confirm(!1, "onerror"), this.unbindEvents();
-  }, o.prototype.unbindEvents = function () {
-    this.proxyImage.removeEventListener("load", this), this.proxyImage.removeEventListener("error", this), this.img.removeEventListener("load", this), this.img.removeEventListener("error", this);
-  }, r.prototype = Object.create(o.prototype), r.prototype.check = function () {
-    this.img.addEventListener("load", this), this.img.addEventListener("error", this), this.img.src = this.url;var t = this.getIsImageComplete();t && (this.confirm(0 !== this.img.naturalWidth, "naturalWidth"), this.unbindEvents());
-  }, r.prototype.unbindEvents = function () {
-    this.img.removeEventListener("load", this), this.img.removeEventListener("error", this);
-  }, r.prototype.confirm = function (t, e) {
-    this.isLoaded = t, this.emitEvent("progress", [this, this.element, e]);
-  }, s.makeJQueryPlugin = function (e) {
-    e = e || t.jQuery, e && (a = e, a.fn.imagesLoaded = function (t, e) {
-      var i = new s(this, t, e);return i.jqDeferred.promise(a(this));
-    });
-  }, s.makeJQueryPlugin(), s;
-}), function (t, e) {
-  "function" == typeof define && define.amd ? define(["flickity/js/index", "imagesloaded/imagesloaded"], function (i, n) {
-    return e(t, i, n);
-  }) : "object" == typeof module && module.exports ? module.exports = e(t, require("flickity"), require("imagesloaded")) : t.Flickity = e(t, t.Flickity, t.imagesLoaded);
-}(window, function (t, e, i) {
-  "use strict";
-  e.createMethods.push("_createImagesLoaded");var n = e.prototype;return n._createImagesLoaded = function () {
-    this.on("activate", this.imagesLoaded);
-  }, n.imagesLoaded = function () {
-    function t(t, i) {
-      var n = e.getParentCell(i.img);e.cellSizeChange(n && n.element), e.options.freeScroll || e.positionSliderAtSelected();
-    }if (this.options.imagesLoaded) {
-      var e = this;i(this.slider).on("progress", t);
-    }
-  }, e;
+      }), a.each(b, function (d, e) {
+        b[d] = a.isFunction(e) && "normalizer" !== d ? e(c) : e;
+      }), a.each(["minlength", "maxlength"], function () {
+        b[this] && (b[this] = Number(b[this]));
+      }), a.each(["rangelength", "range"], function () {
+        var c;b[this] && (a.isArray(b[this]) ? b[this] = [Number(b[this][0]), Number(b[this][1])] : "string" == typeof b[this] && (c = b[this].replace(/[\[\]]/g, "").split(/[\s,]+/), b[this] = [Number(c[0]), Number(c[1])]));
+      }), a.validator.autoCreateRanges && (null != b.min && null != b.max && (b.range = [b.min, b.max], delete b.min, delete b.max), null != b.minlength && null != b.maxlength && (b.rangelength = [b.minlength, b.maxlength], delete b.minlength, delete b.maxlength)), b;
+    }, normalizeRule: function (b) {
+      if ("string" == typeof b) {
+        var c = {};a.each(b.split(/\s/), function () {
+          c[this] = !0;
+        }), b = c;
+      }return b;
+    }, addMethod: function (b, c, d) {
+      a.validator.methods[b] = c, a.validator.messages[b] = void 0 !== d ? d : a.validator.messages[b], c.length < 3 && a.validator.addClassRules(b, a.validator.normalizeRule(b));
+    }, methods: { required: function (b, c, d) {
+        if (!this.depend(d, c)) return "dependency-mismatch";if ("select" === c.nodeName.toLowerCase()) {
+          var e = a(c).val();return e && e.length > 0;
+        }return this.checkable(c) ? this.getLength(b, c) > 0 : b.length > 0;
+      }, email: function (a, b) {
+        return this.optional(b) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(a);
+      }, url: function (a, b) {
+        return this.optional(b) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(a);
+      }, date: function (a, b) {
+        return this.optional(b) || !/Invalid|NaN/.test(new Date(a).toString());
+      }, dateISO: function (a, b) {
+        return this.optional(b) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(a);
+      }, number: function (a, b) {
+        return this.optional(b) || /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(a);
+      }, digits: function (a, b) {
+        return this.optional(b) || /^\d+$/.test(a);
+      }, minlength: function (b, c, d) {
+        var e = a.isArray(b) ? b.length : this.getLength(b, c);return this.optional(c) || e >= d;
+      }, maxlength: function (b, c, d) {
+        var e = a.isArray(b) ? b.length : this.getLength(b, c);return this.optional(c) || e <= d;
+      }, rangelength: function (b, c, d) {
+        var e = a.isArray(b) ? b.length : this.getLength(b, c);return this.optional(c) || e >= d[0] && e <= d[1];
+      }, min: function (a, b, c) {
+        return this.optional(b) || a >= c;
+      }, max: function (a, b, c) {
+        return this.optional(b) || a <= c;
+      }, range: function (a, b, c) {
+        return this.optional(b) || a >= c[0] && a <= c[1];
+      }, step: function (b, c, d) {
+        var e,
+            f = a(c).attr("type"),
+            g = "Step attribute on input type " + f + " is not supported.",
+            h = ["text", "number", "range"],
+            i = new RegExp("\\b" + f + "\\b"),
+            j = f && !i.test(h.join()),
+            k = function (a) {
+          var b = ("" + a).match(/(?:\.(\d+))?$/);return b && b[1] ? b[1].length : 0;
+        },
+            l = function (a) {
+          return Math.round(a * Math.pow(10, e));
+        },
+            m = !0;if (j) throw new Error(g);return e = k(d), (k(b) > e || l(b) % l(d) !== 0) && (m = !1), this.optional(c) || m;
+      }, equalTo: function (b, c, d) {
+        var e = a(d);return this.settings.onfocusout && e.not(".validate-equalTo-blur").length && e.addClass("validate-equalTo-blur").on("blur.validate-equalTo", function () {
+          a(c).valid();
+        }), b === e.val();
+      }, remote: function (b, c, d, e) {
+        if (this.optional(c)) return "dependency-mismatch";e = "string" == typeof e && e || "remote";var f,
+            g,
+            h,
+            i = this.previousValue(c, e);return this.settings.messages[c.name] || (this.settings.messages[c.name] = {}), i.originalMessage = i.originalMessage || this.settings.messages[c.name][e], this.settings.messages[c.name][e] = i.message, d = "string" == typeof d && { url: d } || d, h = a.param(a.extend({ data: b }, d.data)), i.old === h ? i.valid : (i.old = h, f = this, this.startRequest(c), g = {}, g[c.name] = b, a.ajax(a.extend(!0, { mode: "abort", port: "validate" + c.name, dataType: "json", data: g, context: f.currentForm, success: function (a) {
+            var d,
+                g,
+                h,
+                j = a === !0 || "true" === a;f.settings.messages[c.name][e] = i.originalMessage, j ? (h = f.formSubmitted, f.resetInternals(), f.toHide = f.errorsFor(c), f.formSubmitted = h, f.successList.push(c), f.invalid[c.name] = !1, f.showErrors()) : (d = {}, g = a || f.defaultMessage(c, { method: e, parameters: b }), d[c.name] = i.message = g, f.invalid[c.name] = !0, f.showErrors(d)), i.valid = j, f.stopRequest(c, j);
+          } }, d)), "pending");
+      } } });var b,
+      c = {};a.ajaxPrefilter ? a.ajaxPrefilter(function (a, b, d) {
+    var e = a.port;"abort" === a.mode && (c[e] && c[e].abort(), c[e] = d);
+  }) : (b = a.ajax, a.ajax = function (d) {
+    var e = ("mode" in d ? d : a.ajaxSettings).mode,
+        f = ("port" in d ? d : a.ajaxSettings).port;return "abort" === e ? (c[f] && c[f].abort(), c[f] = b.apply(this, arguments), c[f]) : b.apply(this, arguments);
+  });
 });
-// var test = document.getElementsByClassName('sub-menu');
-//
-// (function($){
-//
-//   var kids = document.querySelectorAll('#primary-menu > .menu-item-has-children > .sub-menu');
-//   var kidsArray = Array.prototype.slice.call(kids);
-//   kidsArray.forEach(function(item) {
-//     console.log(item.offsetHeight, item);
-//     item.setAttribute('data-height', item.offsetHeight + 'px');
-//     //item.classList.add('slide');
-//   });
-//
-//   if (window.matchMedia("(min-width: 768px)").matches) {
-//
-//     $('#primary-menu > .menu-item-has-children').on('mouseenter', function(e) {
-//       const _this = $(this);
-//         // console.log('we have focus', $(e.delegateTarget).first('.sub-menu')[0].id);
-//         TweenLite.fromTo(_this.children('.sub-menu'), 0.15, {
-//           height: 0,
-//         },
-//         {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//           onComplete: function() {
-//             //console.log('tween finished');
-//             _this.addClass('slide');
-//           },
-//         });
-//     });
-//
-//     $('#primary-menu > .menu-item-has-children').on('focusin', function(e) {
-//       const _this = $(this);
-//         // console.log('we have focus', $(e.delegateTarget).first('.sub-menu')[0].id);
-//         TweenLite.fromTo(_this.children('.sub-menu'), 0.15, {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//         },
-//         {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//           onComplete: function() {
-//             //console.log('tween finished');
-//             _this.removeClass('slide');
-//           },
-//         });
-//     });
-//
-//     $('#primary-menu > .menu-item-has-children').on('focusout', function(e) {
-//       const _this = $(this);
-//         // console.log('we have focus', $(e.delegateTarget).first('.sub-menu')[0].id);
-//         TweenLite.fromTo(_this.children('.sub-menu'), 0.15, {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//         },
-//         {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//           onComplete: function() {
-//             //console.log('tween finished');
-//             _this.removeClass('slide');
-//           },
-//         });
-//     });
-//
-//     $('#primary-menu > .menu-item-has-children').on('mouseleave', function(e) {
-//       const _this = $(this);
-//         // console.log('we have focus', $(e.delegateTarget).first('.sub-menu')[0].id);
-//         TweenLite.fromTo(_this.children('.sub-menu'), 0.15, {
-//           height: _this.children('.sub-menu').attr('data-height'),
-//         },
-//         {
-//           height: 0,
-//           onComplete: function() {
-//             //console.log('tween finished');
-//             _this.removeClass('slide');
-//           },
-//         });
-//     });
-//
-//   } // end match media
-
+/*! jQuery Validation Plugin - v1.15.1 - 7/22/2016
+ * http://jqueryvalidation.org/
+ * Copyright (c) 2016 Jörn Zaefferer; Licensed MIT */
+!function (a) {
+  "function" == typeof define && define.amd ? define(["jquery", "./jquery.validate.min"], a) : "object" == typeof module && module.exports ? module.exports = a(require("jquery")) : a(jQuery);
+}(function (a) {
+  !function () {
+    function b(a) {
+      return a.replace(/<.[^<>]*?>/g, " ").replace(/&nbsp;|&#160;/gi, " ").replace(/[.(),;:!?%#$'\"_+=\/\-“”’]*/g, "");
+    }a.validator.addMethod("maxWords", function (a, c, d) {
+      return this.optional(c) || b(a).match(/\b\w+\b/g).length <= d;
+    }, a.validator.format("Please enter {0} words or less.")), a.validator.addMethod("minWords", function (a, c, d) {
+      return this.optional(c) || b(a).match(/\b\w+\b/g).length >= d;
+    }, a.validator.format("Please enter at least {0} words.")), a.validator.addMethod("rangeWords", function (a, c, d) {
+      var e = b(a),
+          f = /\b\w+\b/g;return this.optional(c) || e.match(f).length >= d[0] && e.match(f).length <= d[1];
+    }, a.validator.format("Please enter between {0} and {1} words."));
+  }(), a.validator.addMethod("accept", function (b, c, d) {
+    var e,
+        f,
+        g,
+        h = "string" == typeof d ? d.replace(/\s/g, "") : "image/*",
+        i = this.optional(c);if (i) return i;if ("file" === a(c).attr("type") && (h = h.replace(/[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&").replace(/,/g, "|").replace(/\/\*/g, "/.*"), c.files && c.files.length)) for (g = new RegExp(".?(" + h + ")$", "i"), e = 0; e < c.files.length; e++) if (f = c.files[e], !f.type.match(g)) return !1;return !0;
+  }, a.validator.format("Please enter a value with a valid mimetype.")), a.validator.addMethod("alphanumeric", function (a, b) {
+    return this.optional(b) || /^\w+$/i.test(a);
+  }, "Letters, numbers, and underscores only please"), a.validator.addMethod("bankaccountNL", function (a, b) {
+    if (this.optional(b)) return !0;if (!/^[0-9]{9}|([0-9]{2} ){3}[0-9]{3}$/.test(a)) return !1;var c,
+        d,
+        e,
+        f = a.replace(/ /g, ""),
+        g = 0,
+        h = f.length;for (c = 0; c < h; c++) d = h - c, e = f.substring(c, c + 1), g += d * e;return g % 11 === 0;
+  }, "Please specify a valid bank account number"), a.validator.addMethod("bankorgiroaccountNL", function (b, c) {
+    return this.optional(c) || a.validator.methods.bankaccountNL.call(this, b, c) || a.validator.methods.giroaccountNL.call(this, b, c);
+  }, "Please specify a valid bank or giro account number"), a.validator.addMethod("bic", function (a, b) {
+    return this.optional(b) || /^([A-Z]{6}[A-Z2-9][A-NP-Z1-9])(X{3}|[A-WY-Z0-9][A-Z0-9]{2})?$/.test(a.toUpperCase());
+  }, "Please specify a valid BIC code"), a.validator.addMethod("cifES", function (a) {
+    "use strict";
+    var b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h = [];if (a = a.toUpperCase(), !a.match("((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)")) return !1;for (d = 0; d < 9; d++) h[d] = parseInt(a.charAt(d), 10);for (c = h[2] + h[4] + h[6], e = 1; e < 8; e += 2) f = (2 * h[e]).toString(), g = f.charAt(1), c += parseInt(f.charAt(0), 10) + ("" === g ? 0 : parseInt(g, 10));return !!/^[ABCDEFGHJNPQRSUVW]{1}/.test(a) && (c += "", b = 10 - parseInt(c.charAt(c.length - 1), 10), a += b, h[8].toString() === String.fromCharCode(64 + b) || h[8].toString() === a.charAt(a.length - 1));
+  }, "Please specify a valid CIF number."), a.validator.addMethod("cpfBR", function (a) {
+    if (a = a.replace(/([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, ""), 11 !== a.length) return !1;var b,
+        c,
+        d,
+        e,
+        f = 0;if (b = parseInt(a.substring(9, 10), 10), c = parseInt(a.substring(10, 11), 10), d = function (a, b) {
+      var c = 10 * a % 11;return 10 !== c && 11 !== c || (c = 0), c === b;
+    }, "" === a || "00000000000" === a || "11111111111" === a || "22222222222" === a || "33333333333" === a || "44444444444" === a || "55555555555" === a || "66666666666" === a || "77777777777" === a || "88888888888" === a || "99999999999" === a) return !1;for (e = 1; e <= 9; e++) f += parseInt(a.substring(e - 1, e), 10) * (11 - e);if (d(f, b)) {
+      for (f = 0, e = 1; e <= 10; e++) f += parseInt(a.substring(e - 1, e), 10) * (12 - e);return d(f, c);
+    }return !1;
+  }, "Please specify a valid CPF number"), a.validator.addMethod("creditcard", function (a, b) {
+    if (this.optional(b)) return "dependency-mismatch";if (/[^0-9 \-]+/.test(a)) return !1;var c,
+        d,
+        e = 0,
+        f = 0,
+        g = !1;if (a = a.replace(/\D/g, ""), a.length < 13 || a.length > 19) return !1;for (c = a.length - 1; c >= 0; c--) d = a.charAt(c), f = parseInt(d, 10), g && (f *= 2) > 9 && (f -= 9), e += f, g = !g;return e % 10 === 0;
+  }, "Please enter a valid credit card number."), a.validator.addMethod("creditcardtypes", function (a, b, c) {
+    if (/[^0-9\-]+/.test(a)) return !1;a = a.replace(/\D/g, "");var d = 0;return c.mastercard && (d |= 1), c.visa && (d |= 2), c.amex && (d |= 4), c.dinersclub && (d |= 8), c.enroute && (d |= 16), c.discover && (d |= 32), c.jcb && (d |= 64), c.unknown && (d |= 128), c.all && (d = 255), 1 & d && /^(5[12345])/.test(a) ? 16 === a.length : 2 & d && /^(4)/.test(a) ? 16 === a.length : 4 & d && /^(3[47])/.test(a) ? 15 === a.length : 8 & d && /^(3(0[012345]|[68]))/.test(a) ? 14 === a.length : 16 & d && /^(2(014|149))/.test(a) ? 15 === a.length : 32 & d && /^(6011)/.test(a) ? 16 === a.length : 64 & d && /^(3)/.test(a) ? 16 === a.length : 64 & d && /^(2131|1800)/.test(a) ? 15 === a.length : !!(128 & d);
+  }, "Please enter a valid credit card number."), a.validator.addMethod("currency", function (a, b, c) {
+    var d,
+        e = "string" == typeof c,
+        f = e ? c : c[0],
+        g = !!e || c[1];return f = f.replace(/,/g, ""), f = g ? f + "]" : f + "]?", d = "^[" + f + "([1-9]{1}[0-9]{0,2}(\\,[0-9]{3})*(\\.[0-9]{0,2})?|[1-9]{1}[0-9]{0,}(\\.[0-9]{0,2})?|0(\\.[0-9]{0,2})?|(\\.[0-9]{1,2})?)$", d = new RegExp(d), this.optional(b) || d.test(a);
+  }, "Please specify a valid currency"), a.validator.addMethod("dateFA", function (a, b) {
+    return this.optional(b) || /^[1-4]\d{3}\/((0?[1-6]\/((3[0-1])|([1-2][0-9])|(0?[1-9])))|((1[0-2]|(0?[7-9]))\/(30|([1-2][0-9])|(0?[1-9]))))$/.test(a);
+  }, a.validator.messages.date), a.validator.addMethod("dateITA", function (a, b) {
+    var c,
+        d,
+        e,
+        f,
+        g,
+        h = !1,
+        i = /^\d{1,2}\/\d{1,2}\/\d{4}$/;return i.test(a) ? (c = a.split("/"), d = parseInt(c[0], 10), e = parseInt(c[1], 10), f = parseInt(c[2], 10), g = new Date(Date.UTC(f, e - 1, d, 12, 0, 0, 0)), h = g.getUTCFullYear() === f && g.getUTCMonth() === e - 1 && g.getUTCDate() === d) : h = !1, this.optional(b) || h;
+  }, a.validator.messages.date), a.validator.addMethod("dateNL", function (a, b) {
+    return this.optional(b) || /^(0?[1-9]|[12]\d|3[01])[\.\/\-](0?[1-9]|1[012])[\.\/\-]([12]\d)?(\d\d)$/.test(a);
+  }, a.validator.messages.date), a.validator.addMethod("extension", function (a, b, c) {
+    return c = "string" == typeof c ? c.replace(/,/g, "|") : "png|jpe?g|gif", this.optional(b) || a.match(new RegExp("\\.(" + c + ")$", "i"));
+  }, a.validator.format("Please enter a value with a valid extension.")), a.validator.addMethod("giroaccountNL", function (a, b) {
+    return this.optional(b) || /^[0-9]{1,7}$/.test(a);
+  }, "Please specify a valid giro account number"), a.validator.addMethod("iban", function (a, b) {
+    if (this.optional(b)) return !0;var c,
+        d,
+        e,
+        f,
+        g,
+        h,
+        i,
+        j,
+        k,
+        l = a.replace(/ /g, "").toUpperCase(),
+        m = "",
+        n = !0,
+        o = "",
+        p = "",
+        q = 5;if (l.length < q) return !1;if (c = l.substring(0, 2), h = { AL: "\\d{8}[\\dA-Z]{16}", AD: "\\d{8}[\\dA-Z]{12}", AT: "\\d{16}", AZ: "[\\dA-Z]{4}\\d{20}", BE: "\\d{12}", BH: "[A-Z]{4}[\\dA-Z]{14}", BA: "\\d{16}", BR: "\\d{23}[A-Z][\\dA-Z]", BG: "[A-Z]{4}\\d{6}[\\dA-Z]{8}", CR: "\\d{17}", HR: "\\d{17}", CY: "\\d{8}[\\dA-Z]{16}", CZ: "\\d{20}", DK: "\\d{14}", DO: "[A-Z]{4}\\d{20}", EE: "\\d{16}", FO: "\\d{14}", FI: "\\d{14}", FR: "\\d{10}[\\dA-Z]{11}\\d{2}", GE: "[\\dA-Z]{2}\\d{16}", DE: "\\d{18}", GI: "[A-Z]{4}[\\dA-Z]{15}", GR: "\\d{7}[\\dA-Z]{16}", GL: "\\d{14}", GT: "[\\dA-Z]{4}[\\dA-Z]{20}", HU: "\\d{24}", IS: "\\d{22}", IE: "[\\dA-Z]{4}\\d{14}", IL: "\\d{19}", IT: "[A-Z]\\d{10}[\\dA-Z]{12}", KZ: "\\d{3}[\\dA-Z]{13}", KW: "[A-Z]{4}[\\dA-Z]{22}", LV: "[A-Z]{4}[\\dA-Z]{13}", LB: "\\d{4}[\\dA-Z]{20}", LI: "\\d{5}[\\dA-Z]{12}", LT: "\\d{16}", LU: "\\d{3}[\\dA-Z]{13}", MK: "\\d{3}[\\dA-Z]{10}\\d{2}", MT: "[A-Z]{4}\\d{5}[\\dA-Z]{18}", MR: "\\d{23}", MU: "[A-Z]{4}\\d{19}[A-Z]{3}", MC: "\\d{10}[\\dA-Z]{11}\\d{2}", MD: "[\\dA-Z]{2}\\d{18}", ME: "\\d{18}", NL: "[A-Z]{4}\\d{10}", NO: "\\d{11}", PK: "[\\dA-Z]{4}\\d{16}", PS: "[\\dA-Z]{4}\\d{21}", PL: "\\d{24}", PT: "\\d{21}", RO: "[A-Z]{4}[\\dA-Z]{16}", SM: "[A-Z]\\d{10}[\\dA-Z]{12}", SA: "\\d{2}[\\dA-Z]{18}", RS: "\\d{18}", SK: "\\d{20}", SI: "\\d{15}", ES: "\\d{20}", SE: "\\d{20}", CH: "\\d{5}[\\dA-Z]{12}", TN: "\\d{20}", TR: "\\d{5}[\\dA-Z]{17}", AE: "\\d{3}\\d{16}", GB: "[A-Z]{4}\\d{14}", VG: "[\\dA-Z]{4}\\d{16}" }, g = h[c], "undefined" != typeof g && (i = new RegExp("^[A-Z]{2}\\d{2}" + g + "$", ""), !i.test(l))) return !1;for (d = l.substring(4, l.length) + l.substring(0, 4), j = 0; j < d.length; j++) e = d.charAt(j), "0" !== e && (n = !1), n || (m += "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(e));for (k = 0; k < m.length; k++) f = m.charAt(k), p = "" + o + f, o = p % 97;return 1 === o;
+  }, "Please specify a valid IBAN"), a.validator.addMethod("integer", function (a, b) {
+    return this.optional(b) || /^-?\d+$/.test(a);
+  }, "A positive or negative non-decimal number please"), a.validator.addMethod("ipv4", function (a, b) {
+    return this.optional(b) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test(a);
+  }, "Please enter a valid IP v4 address."), a.validator.addMethod("ipv6", function (a, b) {
+    return this.optional(b) || /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test(a);
+  }, "Please enter a valid IP v6 address."), a.validator.addMethod("lettersonly", function (a, b) {
+    return this.optional(b) || /^[a-z]+$/i.test(a);
+  }, "Letters only please"), a.validator.addMethod("letterswithbasicpunc", function (a, b) {
+    return this.optional(b) || /^[a-z\-.,()'"\s]+$/i.test(a);
+  }, "Letters or punctuation only please"), a.validator.addMethod("mobileNL", function (a, b) {
+    return this.optional(b) || /^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)6((\s|\s?\-\s?)?[0-9]){8}$/.test(a);
+  }, "Please specify a valid mobile number"), a.validator.addMethod("mobileUK", function (a, b) {
+    return a = a.replace(/\(|\)|\s+|-/g, ""), this.optional(b) || a.length > 9 && a.match(/^(?:(?:(?:00\s?|\+)44\s?|0)7(?:[1345789]\d{2}|624)\s?\d{3}\s?\d{3})$/);
+  }, "Please specify a valid mobile number"), a.validator.addMethod("nieES", function (a) {
+    "use strict";
+    return a = a.toUpperCase(), !!a.match("((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)") && (/^[T]{1}/.test(a) ? a[8] === /^[T]{1}[A-Z0-9]{8}$/.test(a) : !!/^[XYZ]{1}/.test(a) && a[8] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt(a.replace("X", "0").replace("Y", "1").replace("Z", "2").substring(0, 8) % 23));
+  }, "Please specify a valid NIE number."), a.validator.addMethod("nifES", function (a) {
+    "use strict";
+    return a = a.toUpperCase(), !!a.match("((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)") && (/^[0-9]{8}[A-Z]{1}$/.test(a) ? "TRWAGMYFPDXBNJZSQVHLCKE".charAt(a.substring(8, 0) % 23) === a.charAt(8) : !!/^[KLM]{1}/.test(a) && a[8] === String.fromCharCode(64));
+  }, "Please specify a valid NIF number."), a.validator.addMethod("notEqualTo", function (b, c, d) {
+    return this.optional(c) || !a.validator.methods.equalTo.call(this, b, c, d);
+  }, "Please enter a different value, values must not be the same."), a.validator.addMethod("nowhitespace", function (a, b) {
+    return this.optional(b) || /^\S+$/i.test(a);
+  }, "No white space please"), a.validator.addMethod("pattern", function (a, b, c) {
+    return !!this.optional(b) || ("string" == typeof c && (c = new RegExp("^(?:" + c + ")$")), c.test(a));
+  }, "Invalid format."), a.validator.addMethod("phoneNL", function (a, b) {
+    return this.optional(b) || /^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9]){8}$/.test(a);
+  }, "Please specify a valid phone number."), a.validator.addMethod("phoneUK", function (a, b) {
+    return a = a.replace(/\(|\)|\s+|-/g, ""), this.optional(b) || a.length > 9 && a.match(/^(?:(?:(?:00\s?|\+)44\s?)|(?:\(?0))(?:\d{2}\)?\s?\d{4}\s?\d{4}|\d{3}\)?\s?\d{3}\s?\d{3,4}|\d{4}\)?\s?(?:\d{5}|\d{3}\s?\d{3})|\d{5}\)?\s?\d{4,5})$/);
+  }, "Please specify a valid phone number"), a.validator.addMethod("phoneUS", function (a, b) {
+    return a = a.replace(/\s+/g, ""), this.optional(b) || a.length > 9 && a.match(/^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]([02-9]\d|1[02-9])-?\d{4}$/);
+  }, "Please specify a valid phone number"), a.validator.addMethod("phonesUK", function (a, b) {
+    return a = a.replace(/\(|\)|\s+|-/g, ""), this.optional(b) || a.length > 9 && a.match(/^(?:(?:(?:00\s?|\+)44\s?|0)(?:1\d{8,9}|[23]\d{9}|7(?:[1345789]\d{8}|624\d{6})))$/);
+  }, "Please specify a valid uk phone number"), a.validator.addMethod("postalCodeCA", function (a, b) {
+    return this.optional(b) || /^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ] *\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i.test(a);
+  }, "Please specify a valid postal code"), a.validator.addMethod("postalcodeBR", function (a, b) {
+    return this.optional(b) || /^\d{2}.\d{3}-\d{3}?$|^\d{5}-?\d{3}?$/.test(a);
+  }, "Informe um CEP válido."), a.validator.addMethod("postalcodeIT", function (a, b) {
+    return this.optional(b) || /^\d{5}$/.test(a);
+  }, "Please specify a valid postal code"), a.validator.addMethod("postalcodeNL", function (a, b) {
+    return this.optional(b) || /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/.test(a);
+  }, "Please specify a valid postal code"), a.validator.addMethod("postcodeUK", function (a, b) {
+    return this.optional(b) || /^((([A-PR-UWYZ][0-9])|([A-PR-UWYZ][0-9][0-9])|([A-PR-UWYZ][A-HK-Y][0-9])|([A-PR-UWYZ][A-HK-Y][0-9][0-9])|([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY]))\s?([0-9][ABD-HJLNP-UW-Z]{2})|(GIR)\s?(0AA))$/i.test(a);
+  }, "Please specify a valid UK postcode"), a.validator.addMethod("require_from_group", function (b, c, d) {
+    var e = a(d[1], c.form),
+        f = e.eq(0),
+        g = f.data("valid_req_grp") ? f.data("valid_req_grp") : a.extend({}, this),
+        h = e.filter(function () {
+      return g.elementValue(this);
+    }).length >= d[0];return f.data("valid_req_grp", g), a(c).data("being_validated") || (e.data("being_validated", !0), e.each(function () {
+      g.element(this);
+    }), e.data("being_validated", !1)), h;
+  }, a.validator.format("Please fill at least {0} of these fields.")), a.validator.addMethod("skip_or_fill_minimum", function (b, c, d) {
+    var e = a(d[1], c.form),
+        f = e.eq(0),
+        g = f.data("valid_skip") ? f.data("valid_skip") : a.extend({}, this),
+        h = e.filter(function () {
+      return g.elementValue(this);
+    }).length,
+        i = 0 === h || h >= d[0];return f.data("valid_skip", g), a(c).data("being_validated") || (e.data("being_validated", !0), e.each(function () {
+      g.element(this);
+    }), e.data("being_validated", !1)), i;
+  }, a.validator.format("Please either skip these fields or fill at least {0} of them.")), a.validator.addMethod("stateUS", function (a, b, c) {
+    var d,
+        e = "undefined" == typeof c,
+        f = !e && "undefined" != typeof c.caseSensitive && c.caseSensitive,
+        g = !e && "undefined" != typeof c.includeTerritories && c.includeTerritories,
+        h = !e && "undefined" != typeof c.includeMilitary && c.includeMilitary;return d = g || h ? g && h ? "^(A[AEKLPRSZ]|C[AOT]|D[CE]|FL|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEINOPST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$" : g ? "^(A[KLRSZ]|C[AOT]|D[CE]|FL|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEINOPST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$" : "^(A[AEKLPRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])$" : "^(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])$", d = f ? new RegExp(d) : new RegExp(d, "i"), this.optional(b) || d.test(a);
+  }, "Please specify a valid state"), a.validator.addMethod("strippedminlength", function (b, c, d) {
+    return a(b).text().length >= d;
+  }, a.validator.format("Please enter at least {0} characters")), a.validator.addMethod("time", function (a, b) {
+    return this.optional(b) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(a);
+  }, "Please enter a valid time, between 00:00 and 23:59"), a.validator.addMethod("time12h", function (a, b) {
+    return this.optional(b) || /^((0?[1-9]|1[012])(:[0-5]\d){1,2}(\ ?[AP]M))$/i.test(a);
+  }, "Please enter a valid time in 12-hour am/pm format"), a.validator.addMethod("url2", function (a, b) {
+    return this.optional(b) || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)*(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(a);
+  }, a.validator.messages.url), a.validator.addMethod("vinUS", function (a) {
+    if (17 !== a.length) return !1;var b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h = ["A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+        i = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 7, 9, 2, 3, 4, 5, 6, 7, 8, 9],
+        j = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2],
+        k = 0;for (b = 0; b < 17; b++) {
+      if (e = j[b], d = a.slice(b, b + 1), 8 === b && (g = d), isNaN(d)) {
+        for (c = 0; c < h.length; c++) if (d.toUpperCase() === h[c]) {
+          d = i[c], d *= e, isNaN(g) && 8 === c && (g = h[c]);break;
+        }
+      } else d *= e;k += d;
+    }return f = k % 11, 10 === f && (f = "X"), f === g;
+  }, "The specified vehicle identification number (VIN) is invalid."), a.validator.addMethod("zipcodeUS", function (a, b) {
+    return this.optional(b) || /^\d{5}(-\d{4})?$/.test(a);
+  }, "The specified US ZIP Code is invalid"), a.validator.addMethod("ziprange", function (a, b) {
+    return this.optional(b) || /^90[2-5]\d\{2\}-\d{4}$/.test(a);
+  }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx");
+});
 (function ($) {
 
   $('input.search-submit').addClass('btn btn-default');
-  $carousel = $('.carousel');
+  // $carousel = $('.carousel');
 
-  if ($carousel) {
-    $carousel.flickity({
-      wrapAround: true,
-      autoPlay: true,
-      pageDots: false
+  // if($carousel) {
+  //   $carousel.flickity({
+  //     wrapAround: true,
+  //     autoPlay: true,
+  //     pageDots: false,
+  //   });
+
+  //  console.log('there is flickity', $carousel);
+  //  }
+
+  // Removes inline width from Image Captions
+  // * jQuery hack solution - should fix in the theme at some point
+
+  $("figure").removeAttr("style");
+
+  $("article#post-187 h2:first").before("<ul id='scriptLinks'></ul>");
+
+  $("article#post-187 h2").each(function (index) {
+
+    $("#scriptLinks").append("<li><a href='#script" + index + "'>" + $(this).text() + "</a></li>");
+
+    $(this).wrapInner(function () {
+      return "<div id='script" + index + "'></div>";
     });
+  });
 
-    console.log('there is flickity', $carousel);
-  }
+  // Validation
 
-  // this isn't necessary at this point
-  // we are just forcing all images to 100% width
-  // $(".carousel img").each(function() {
-  //     // Calculate aspect ratio and store it in HTML data- attribute
-  //     var aspectRatio = $(this).width()/$(this).height();
-  //     $(this).data("aspect-ratio", aspectRatio);
-
-  //     // Conditional statement
-  //     if(aspectRatio >= 1) {
-  //         // Image is landscape
-  //         $(this).css({
-  //             width: "100%",
-  //             height: "auto"
-  //         });
-  //     } else if (aspectRatio < 1) {
-  //         // Image is portrait
-  //         $(this).css({
-  //             height: "100%",
-  //             width: "auto",
-  //         });
-  //     }
+  // Enable for testing
+  // jQuery.validator.setDefaults({
+  //   debug: true,
+  //   success: "valid"
   // });
+
+  $("#mc4wp-form-1").validate({
+    rules: {
+      EMAIL: {
+        required: true,
+        email: true
+      },
+      MMERGE3: {
+        phoneUS: true
+      }
+    }
+  });
+
+  var re = /\(?([0-9]{3})\)?-?\s?([0-9]{3})-([0-9]{4})/g;
+
+  $("p").each(function () {
+    $(this).html($(this).html().replace(re, "<a href=\"tel:1$1$2$3\">($1) $2-$3</a>"));
+  });
 })(jQuery);
-
-// jQuery('.menu-item-has-children').css({
-//   outline: '1px solid red',
-// });
-
-
-//  jQuery('#primary-menu > .menu-item-has-children').on('focus', function(e) {
-//    console.log('some focus event', jQuery(e.delegateTarget).first('.sub-menu')[0].id);
-//   //  TweenLite.to(jQuery(this).children('.sub-menu'), 0.25, {
-//   //     height: 0,
-//   //     onComplete: function() {
-//   //       //console.log('tween finished');
-//   //     }
-//   //   });
-//  });

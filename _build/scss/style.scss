@@ -51,7 +51,7 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
 @import "mixins/mixins-master";
 
 
-@import url('https://fonts.googleapis.com/css?family=Noto+Serif');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 
 /** Ultra Light */
@@ -115,6 +115,7 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
 # Forms
 --------------------------------------------------------------*/
 @import "forms/forms";
+@import "bootstrap/forms";
 
 /*--------------------------------------------------------------
 # Navigation

@@ -24,23 +24,23 @@ header.site-header {
       padding: 0;
       font-family: $font-family-display;
       font-size: 40px;
-      font-weight: 600;
-      margin-top: 40px;
+      font-weight: 400;
+      margin-top: 16px;
       padding: 0;
       letter-spacing: 0.02em;
       line-height: 1.2em;
       text-align: center;
-      text-shadow: #000 3px 3px 1px;
+      text-shadow: $brand-secondary 3px 3px 1px;
 
 
       @media (min-width: 768px) {
-        font-size: 56px;
+        font-size: 62px;
       }
 
       a {
         color: $gray-lighter;
         text-decoration: none;
-        text-shadow: #000 3px 3px 1px;
+        text-shadow: $brand-secondary 3px 3px 1px;
 
         &:hover { color: $gray-light; }
         // &:visited { color: $gray-lighter; }
@@ -70,7 +70,7 @@ header.site-header {
   padding-top: 62px;
 
   @media (min-width: 768px) {
-    padding-top: 80px;
+    padding-top: 100px;
   }
 
   a {
@@ -78,7 +78,7 @@ header.site-header {
     text-decoration: none;
     color: $gray-lighter;
     text-decoration: none;
-    text-shadow: #000 6px 6px 2px;
+    text-shadow: $brand-secondary 3px 3px 2px;
 
     &:hover { color: $gray-light; }
     // &:visited { color: $link-visited-color; }
@@ -138,4 +138,80 @@ aside .widget ul {
 aside .widget ul li {
   line-height: 1.4rem;
   padding-bottom: 8px;
+}
+
+ul#scriptLinks {
+  list-style: none;
+  line-height: 2em;
+}
+
+// MailChimp Sign-up form in the Sidebar
+
+// aside#secondary section:first-child {
+//
+//   padding: 10px 20px 20px;
+//   border: 1px solid #000;
+//   background-color: #EFEFEF;
+//   max-width: 360px;
+//
+//   h2 {
+//     color: $brand-primary;
+//     margin-top: 0;
+//     text-align: center;
+//   }
+//
+//   .mc4wp-success {
+//     color: $brand-success;
+//     font-weight: 700;
+//   } /* success message */
+//
+//   .mc4wp-error {
+//     color: $brand-danger;
+//       font-weight: 700;
+//   } /* error messages */
+//
+//   .mc4wp-notice {
+//     color: $brand-warning;
+//   } /* notice messages */
+//
+//   div.field-group {
+//
+//     label {
+//       display: block;
+//     }
+//
+//     input {
+//
+//       &[type=email] {
+//         margin-bottom: 10px;
+//       }
+//
+//       &[type=submit] {
+//         margin-top: 10px !important;
+//       }
+//
+//     }
+//   }
+// }
+
+// Validation
+
+.error {
+  color: $brand-danger;
+  font-size: 80%;
+}
+
+// Content View
+
+.pt-cv-view .pt-cv-title {
+    margin-bottom: 14px;
+    font-size: 21px;
+}
+
+.pt-cv-content {
+  color: $text-color;
+}
+
+.pt-cv-wrapper .btn-success {
+  margin-top: 20px;
 }
