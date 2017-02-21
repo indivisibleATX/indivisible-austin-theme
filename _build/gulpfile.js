@@ -49,6 +49,8 @@ gulp.task('watch', function() {
 // 'gulp package' to build zip file for upload
 gulp.task('package', function() {
   gulp.src(['../**/*.*', '!../_build/**'])
-  .pipe(zip('indvatx.zip'))
+  .pipe(zip('indvcolors.zip'))
   .pipe(gulp.dest('../../'));
 });
+
+gulp.task('default', ['sass', 'jsConcat', 'package']);
