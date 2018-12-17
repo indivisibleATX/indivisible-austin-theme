@@ -14,7 +14,7 @@
 // Clearfix
 @mixin clearfix() {
 	content: "";
-	display: table;
+	display: block;
 	table-layout: fixed;
 }
 
