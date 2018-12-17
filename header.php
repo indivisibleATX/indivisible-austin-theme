@@ -17,9 +17,13 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 
 <?php wp_head(); ?>
+<script>
+function js_load() {
+document.body.style.visibility='visible';
+}
+</script>
 </head>
-
-<body <?php body_class(); ?>>
+<body class="blog tribe-no-js group-blog hfeed" style="visibility: hidden;" onload="js_load()">
 
 	<header id="masthead" class="site-header" role="banner">
 		<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'indvatx' ); ?></a>
